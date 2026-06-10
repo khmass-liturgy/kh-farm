@@ -88,7 +88,7 @@ header h1 span{font-size:11px;opacity:.7;font-weight:300;margin-left:6px;}
 .col-no{width:34px;color:var(--text-soft);font-size:12px;text-align:center;}
 .col-gubun{width:98px;}
 .col-content{min-width:180px;}
-.col-category{width:86px;}
+
 .col-note{width:150px;}
 .col-action{width:40px;text-align:center;}
 
@@ -239,125 +239,124 @@ header h1 span{font-size:11px;opacity:.7;font-weight:300;margin-left:6px;}
 /* ════════════════════════════════════════════
    상수 & 기본 데이터
 ════════════════════════════════════════════ */
-const DATA_VERSION = 'v4';
-const CATEGORIES   = ['사양관리','약품투약','예방백신','기타관리'];
+const DATA_VERSION = 'v5';
 
 // 탭별 기본 섹션 정의 { name, rows[] }
 const INIT_TABS = {
   tab1:[
     {name:'계분 반출 및 청소', rows:[
-      {gubun:'계분 반출',content:'계사 내부 먼지 청소',category:'사양관리',note:''},
-      {gubun:'계분 반출',content:'사료라인 잔여사료 배출 처리',category:'사양관리',note:''},
-      {gubun:'계분 반출',content:'물라인 청소',category:'사양관리',note:''},
-      {gubun:'계분 반출',content:'산란상자내 청소',category:'사양관리',note:''},
+      {gubun:'계분 반출',content:'계사 내부 먼지 청소',note:''},
+      {gubun:'계분 반출',content:'사료라인 잔여사료 배출 처리',note:''},
+      {gubun:'계분 반출',content:'물라인 청소',note:''},
+      {gubun:'계분 반출',content:'산란상자내 청소',note:''},
     ]},
     {name:'사료빈 청소', rows:[
-      {gubun:'사료빈 청소',content:'사료빈 물청소',category:'사양관리',note:''},
-      {gubun:'사료빈 청소',content:'건조',category:'사양관리',note:''},
+      {gubun:'사료빈 청소',content:'사료빈 물청소',note:''},
+      {gubun:'사료빈 청소',content:'건조',note:''},
     ]},
     {name:'급수 관련 청소', rows:[
-      {gubun:'급수관련 청소',content:'급수실 청소 (물통, 모터, 여과기 등)',category:'사양관리',note:''},
+      {gubun:'급수관련 청소',content:'급수실 청소 (물통, 모터, 여과기 등)',note:''},
     ]},
     {name:'산란상자 청소', rows:[
-      {gubun:'산란상자 청소',content:'산란상자내 계분, 먼지 청소',category:'사양관리',note:''},
-      {gubun:'산란상자 청소',content:'계란 이송벨트 청소',category:'사양관리',note:''},
+      {gubun:'산란상자 청소',content:'산란상자내 계분, 먼지 청소',note:''},
+      {gubun:'산란상자 청소',content:'계란 이송벨트 청소',note:''},
     ]},
     {name:'소독', rows:[
-      {gubun:'소독',content:'급이라인, 급수라인, 산란상자 소독',category:'약품투약',note:'소독약품 : 파콤 A'},
-      {gubun:'소독',content:'횃대, 기타시설물 소독',category:'약품투약',note:''},
+      {gubun:'소독',content:'급이라인, 급수라인, 산란상자 소독',note:'소독약품 : 파콤 A'},
+      {gubun:'소독',content:'횃대, 기타시설물 소독',note:''},
     ]},
     {name:'사료·물 준비', rows:[
-      {gubun:'사료/물 준비',content:'곰팡이 흡착제 첨가',category:'약품투약',note:'흡착제 : 마이코톡신'},
-      {gubun:'사료/물 준비',content:'물 소독제 첨가',category:'약품투약',note:'소독제 : 라이프가드정'},
+      {gubun:'사료/물 준비',content:'곰팡이 흡착제 첨가',note:'흡착제 : 마이코톡신'},
+      {gubun:'사료/물 준비',content:'물 소독제 첨가',note:'소독제 : 라이프가드정'},
     ]},
     {name:'왕겨 살포 · 실리카 도포 · 등라인', rows:[
-      {gubun:'왕겨 살포',content:'왕겨살포 : 100수/1포',category:'사양관리',note:''},
-      {gubun:'실리카 도포',content:'실리카 도포 : 산란상자, 횃대 등',category:'기타관리',note:''},
-      {gubun:'등라인',content:'점검 및 교체',category:'기타관리',note:''},
+      {gubun:'왕겨 살포',content:'왕겨살포 : 100수/1포',note:''},
+      {gubun:'실리카 도포',content:'실리카 도포 : 산란상자, 횃대 등',note:''},
+      {gubun:'등라인',content:'점검 및 교체',note:''},
     ]},
   ],
   tab2:[
     {name:'입추시 관리', rows:[
-      {gubun:'입추시',content:'체중, 균일도 체크 (80~85%)',category:'사양관리',note:''},
-      {gubun:'입추시',content:'걸음걸이, 활력도 등 건강 체크',category:'사양관리',note:''},
-      {gubun:'입추시',content:'계분 체크 : 혈변·콕시듐, 묽은변·장염',category:'사양관리',note:''},
-      {gubun:'입추시',content:'중추 백신기록 확인, 체크',category:'예방백신',note:''},
-      {gubun:'입추시',content:'부리다듬기, SE검사 기록 체크',category:'기타관리',note:''},
+      {gubun:'입추시',content:'체중, 균일도 체크 (80~85%)',note:''},
+      {gubun:'입추시',content:'걸음걸이, 활력도 등 건강 체크',note:''},
+      {gubun:'입추시',content:'계분 체크 : 혈변·콕시듐, 묽은변·장염',note:''},
+      {gubun:'입추시',content:'중추 백신기록 확인, 체크',note:''},
+      {gubun:'입추시',content:'부리다듬기, SE검사 기록 체크',note:''},
     ]},
     {name:'예방백신 실시', rows:[
-      {gubun:'예방백신',content:'구충 실시 : 2회 실시(1주일), 90~100일',category:'예방백신',note:'구충제 : 레바미솔산'},
-      {gubun:'예방백신',content:'IB+QX 실시(전동) : 90~100일',category:'예방백신',note:'IB + QX'},
-      {gubun:'예방백신',content:'SG9R 생독백신 실시 : 100일',category:'예방백신',note:'SG9R'},
-      {gubun:'예방백신',content:'ABBNE 백신실시 : 110일',category:'예방백신',note:'PABEN-Q'},
+      {gubun:'예방백신',content:'구충 실시 : 2회 실시(1주일), 90~100일',note:'구충제 : 레바미솔산'},
+      {gubun:'예방백신',content:'IB+QX 실시(전동) : 90~100일',note:'IB + QX'},
+      {gubun:'예방백신',content:'SG9R 생독백신 실시 : 100일',note:'SG9R'},
+      {gubun:'예방백신',content:'ABBNE 백신실시 : 110일',note:'PABEN-Q'},
     ]},
   ],
   tab3:[
     {name:'산란 준비', rows:[
-      {gubun:'산란준비',content:'사각지역 차단망 설치',category:'사양관리',note:''},
-      {gubun:'산란준비',content:'어두운곳 등 설치, 반사필름 설치',category:'기타관리',note:''},
-      {gubun:'산란준비',content:'산란상자 산란 유도',category:'사양관리',note:''},
-      {gubun:'산란준비',content:'산란상자, 벨트 점검',category:'사양관리',note:''},
-      {gubun:'산란준비',content:'점등 시작 (타이머 점검)',category:'사양관리',note:''},
-      {gubun:'산란준비',content:'산란예비 사료 급여 (1~2회)',category:'사양관리',note:'산란예비 사료'},
+      {gubun:'산란준비',content:'사각지역 차단망 설치',note:''},
+      {gubun:'산란준비',content:'어두운곳 등 설치, 반사필름 설치',note:''},
+      {gubun:'산란준비',content:'산란상자 산란 유도',note:''},
+      {gubun:'산란준비',content:'산란상자, 벨트 점검',note:''},
+      {gubun:'산란준비',content:'점등 시작 (타이머 점검)',note:''},
+      {gubun:'산란준비',content:'산란예비 사료 급여 (1~2회)',note:'산란예비 사료'},
     ]},
   ],
   tab4:[
     {name:'산란 사양관리', rows:[
-      {gubun:'산란 사양',content:'단계별 산란사료 급이',category:'사양관리',note:''},
-      {gubun:'산란 사양',content:'음수백신시 중화제 사용',category:'약품투약',note:'※ 음수백신 : 중화제 사용'},
-      {gubun:'산란 사양',content:'점등 유지 (15시간)',category:'사양관리',note:''},
-      {gubun:'산란 사양',content:'급이량, 급수량 체크',category:'사양관리',note:''},
-      {gubun:'산란 사양',content:'여름철 환기관리 유의',category:'사양관리',note:''},
-      {gubun:'산란 사양',content:'왕겨 수시 보충',category:'사양관리',note:''},
+      {gubun:'산란 사양',content:'단계별 산란사료 급이',note:''},
+      {gubun:'산란 사양',content:'음수백신시 중화제 사용',note:'※ 음수백신 : 중화제 사용'},
+      {gubun:'산란 사양',content:'점등 유지 (15시간)',note:''},
+      {gubun:'산란 사양',content:'급이량, 급수량 체크',note:''},
+      {gubun:'산란 사양',content:'여름철 환기관리 유의',note:''},
+      {gubun:'산란 사양',content:'왕겨 수시 보충',note:''},
     ]},
     {name:'예방백신 실시', rows:[
-      {gubun:'예방백신',content:'IB+QX 실시(전동) : 2개월 1회',category:'예방백신',note:''},
-      {gubun:'예방백신',content:'애비뉴(뉴캐슬) 실시(전동) : 2개월 1회',category:'예방백신',note:''},
-      {gubun:'예방백신',content:'대장균 백신 : 매년 11월/겨울전 전동 실시',category:'예방백신',note:'대장균 백신 : 이콜라이'},
-      {gubun:'예방백신',content:'음수백신시 중화제 사용',category:'약품투약',note:'※ 음수백신 : 중화제 사용'},
+      {gubun:'예방백신',content:'IB+QX 실시(전동) : 2개월 1회',note:''},
+      {gubun:'예방백신',content:'애비뉴(뉴캐슬) 실시(전동) : 2개월 1회',note:''},
+      {gubun:'예방백신',content:'대장균 백신 : 매년 11월/겨울전 전동 실시',note:'대장균 백신 : 이콜라이'},
+      {gubun:'예방백신',content:'음수백신시 중화제 사용',note:'※ 음수백신 : 중화제 사용'},
     ]},
     {name:'서부사료 주령별 급이', rows:[
-      {gubun:'중추단계',content:'중병아리',category:'사양관리',note:'서부사료 주령별 급이'},
-      {gubun:'산란초기',content:'산란예비',category:'사양관리',note:''},
-      {gubun:'~40주',content:'웰빙1',category:'사양관리',note:''},
-      {gubun:'~50주',content:'웰빙2',category:'사양관리',note:''},
-      {gubun:'~60주',content:'웰빙3',category:'사양관리',note:''},
-      {gubun:'~70주',content:'웰빙4',category:'사양관리',note:''},
-      {gubun:'70주 이상',content:'웰빙5',category:'사양관리',note:''},
+      {gubun:'중추단계',content:'중병아리',note:'서부사료 주령별 급이'},
+      {gubun:'산란초기',content:'산란예비',note:''},
+      {gubun:'~40주',content:'웰빙1',note:''},
+      {gubun:'~50주',content:'웰빙2',note:''},
+      {gubun:'~60주',content:'웰빙3',note:''},
+      {gubun:'~70주',content:'웰빙4',note:''},
+      {gubun:'70주 이상',content:'웰빙5',note:''},
     ]},
   ],
   tab5:[
     {name:'겨울철 계사 관리', rows:[
-      {gubun:'겨울철 계사',content:'계분 일부 반출, 왕겨 보충',category:'사양관리',note:''},
-      {gubun:'겨울철 계사',content:'측면 비닐 설치 및 환풍기 점검',category:'기타관리',note:''},
-      {gubun:'겨울철 계사',content:'급수기 급수조절부분 보온 실시',category:'사양관리',note:''},
-      {gubun:'겨울철 계사',content:'급수실 라디에이터 가동',category:'사양관리',note:''},
-      {gubun:'겨울철 계사',content:'급수라인 열선 점검 및 가동',category:'사양관리',note:''},
-      {gubun:'겨울철 계사',content:'급수라인 동파방지대책 마련 : 물흘림 등',category:'기타관리',note:''},
-      {gubun:'겨울철 계사',content:'계사 틈새 관리 철저 : 샛바람',category:'기타관리',note:''},
-      {gubun:'겨울철 계사',content:'왕겨 수시 보충',category:'사양관리',note:''},
+      {gubun:'겨울철 계사',content:'계분 일부 반출, 왕겨 보충',note:''},
+      {gubun:'겨울철 계사',content:'측면 비닐 설치 및 환풍기 점검',note:''},
+      {gubun:'겨울철 계사',content:'급수기 급수조절부분 보온 실시',note:''},
+      {gubun:'겨울철 계사',content:'급수실 라디에이터 가동',note:''},
+      {gubun:'겨울철 계사',content:'급수라인 열선 점검 및 가동',note:''},
+      {gubun:'겨울철 계사',content:'급수라인 동파방지대책 마련 : 물흘림 등',note:''},
+      {gubun:'겨울철 계사',content:'계사 틈새 관리 철저 : 샛바람',note:''},
+      {gubun:'겨울철 계사',content:'왕겨 수시 보충',note:''},
     ]},
   ],
   tab6:[
     {name:'주요 검사 항목', rows:[
-      {gubun:'SE검사',content:'HACCP 대비 SE검사',category:'기타관리',note:''},
-      {gubun:'SE검사',content:'중추 입추시 SE 성적서 확인',category:'기타관리',note:''},
-      {gubun:'환경검사',content:'환경검사 실시 : 반기 1회 (위생시험소)',category:'기타관리',note:''},
-      {gubun:'품질검사',content:'자가품질 검사 : 반기 1회 (위생시험소)',category:'기타관리',note:''},
-      {gubun:'출하검사',content:'출하전 살충제 검사',category:'기타관리',note:''},
+      {gubun:'SE검사',content:'HACCP 대비 SE검사',note:''},
+      {gubun:'SE검사',content:'중추 입추시 SE 성적서 확인',note:''},
+      {gubun:'환경검사',content:'환경검사 실시 : 반기 1회 (위생시험소)',note:''},
+      {gubun:'품질검사',content:'자가품질 검사 : 반기 1회 (위생시험소)',note:''},
+      {gubun:'출하검사',content:'출하전 살충제 검사',note:''},
     ]},
   ],
   tab7:[
     {name:'교육', rows:[
-      {gubun:'교육',content:'무항생제축산물 교육',category:'기타관리',note:''},
-      {gubun:'교육',content:'HACCP 교육',category:'기타관리',note:''},
-      {gubun:'교육',content:'동물복지 교육',category:'기타관리',note:''},
-      {gubun:'교육',content:'축산업종사자 교육, 차량 교육',category:'기타관리',note:''},
-      {gubun:'교육',content:'매장 위생교육, 위생 검사 (보건소)',category:'기타관리',note:''},
+      {gubun:'교육',content:'무항생제축산물 교육',note:''},
+      {gubun:'교육',content:'HACCP 교육',note:''},
+      {gubun:'교육',content:'동물복지 교육',note:''},
+      {gubun:'교육',content:'축산업종사자 교육, 차량 교육',note:''},
+      {gubun:'교육',content:'매장 위생교육, 위생 검사 (보건소)',note:''},
     ]},
     {name:'수질·전기안전 검사', rows:[
-      {gubun:'수질검사',content:'수질검사 : 매년',category:'기타관리',note:''},
-      {gubun:'전기안전',content:'전기안전검사 : 1회/2년',category:'기타관리',note:''},
+      {gubun:'수질검사',content:'수질검사 : 매년',note:''},
+      {gubun:'전기안전',content:'전기안전검사 : 1회/2년',note:''},
     ]},
   ],
 };
@@ -365,7 +364,7 @@ const INIT_TABS = {
 /* ════════════════════════════════════════════
    상태
 ════════════════════════════════════════════ */
-// tabData[tabId] = [ {name, rows:[{gubun,content,category,note}]}, ... ]
+// tabData[tabId] = [ {name, rows:[{gubun,content,note}]}, ... ]
 let tabData = {};
 let currentTabId = 'tab1';
 let pendingDelTab = null;
@@ -572,7 +571,6 @@ function buildSectionCard(tid, sidx, sec) {
     <th class="col-no">#</th>
     <th class="col-gubun">구분</th>
     <th class="col-content">관리 내용</th>
-    <th class="col-category">분류</th>
     <th class="col-note">비고</th>
     <th class="col-action"></th>
   </tr></thead>`;
@@ -597,14 +595,10 @@ function buildSectionCard(tid, sidx, sec) {
 
 function buildRow(tid, sidx, ridx, r) {
   const tr = document.createElement('tr');
-  const opts = CATEGORIES.map(c =>
-    `<option value="${c}"${r.category===c?' selected':''}>${c}</option>`
-  ).join('');
   tr.innerHTML = `
     <td class="col-no">${ridx+1}</td>
     <td class="col-gubun"><input type="text" value="${esc(r.gubun)}"   data-tab="${tid}" data-sidx="${sidx}" data-row="${ridx}" data-field="gubun"></td>
     <td class="col-content"><input type="text" value="${esc(r.content)}" data-tab="${tid}" data-sidx="${sidx}" data-row="${ridx}" data-field="content"></td>
-    <td class="col-category"><select data-tab="${tid}" data-sidx="${sidx}" data-row="${ridx}" data-field="category">${opts}</select></td>
     <td class="col-note"><input type="text" value="${esc(r.note)}"    data-tab="${tid}" data-sidx="${sidx}" data-row="${ridx}" data-field="note"></td>
     <td class="col-action"><button class="btn-del" data-tab="${tid}" data-sidx="${sidx}" data-row="${ridx}" title="삭제">✕</button></td>`;
   return tr;
@@ -677,7 +671,7 @@ function confirmDelSection() {
    행 추가 / 삭제
 ════════════════════════════════════════════ */
 function addRow(tid, sidx) {
-  tabData[tid][sidx].rows.push({gubun:'',content:'',category:'사양관리',note:''});
+  tabData[tid][sidx].rows.push({gubun:'',content:'',note:''});
   const tbody = document.getElementById(`tbody_${tid}_${sidx}`);
   const rows  = tabData[tid][sidx].rows;
   const ridx  = rows.length - 1;
