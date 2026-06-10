@@ -30,6 +30,8 @@ header h1 span{font-size:11px;opacity:.7;font-weight:300;margin-left:6px;}
 .hbtn-print:hover{background:rgba(255,255,255,.28);}
 .hbtn-pdf{background:#c4813a;color:#fff;}
 .hbtn-pdf:hover{background:#b0722f;}
+.hbtn-load{background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.4);}
+.hbtn-load:hover{background:rgba(255,255,255,.28);}
 .hbtn-save{background:#fff;color:var(--accent);}
 .hbtn-save:hover{background:#eafaf0;}
 
@@ -179,10 +181,11 @@ header h1 span{font-size:11px;opacity:.7;font-weight:300;margin-left:6px;}
   <div class="header-btns">
     <button class="hbtn hbtn-print" id="btnPrint">🖨️ 인쇄</button>
     <button class="hbtn hbtn-pdf"   id="btnPdf">📄 PDF</button>
+    <button class="hbtn hbtn-load"  id="btnLoad">📂 불러오기</button>
     <button class="hbtn hbtn-save"  id="btnSave">💾 저장</button>
   </div>
 </header>
-
+<input type="file" id="fileInput" accept=".json" style="display:none">
 <!-- PDF 모달 -->
 <div class="modal-overlay" id="pdfModal">
   <div class="modal-box">
@@ -604,7 +607,9 @@ function bindEvents() {
   // 헤더 버튼
   document.getElementById('btnPrint').addEventListener('click', () => { printMode='current'; executePrint(); });
   document.getElementById('btnPdf').addEventListener('click',   () => document.getElementById('pdfModal').classList.add('show'));
+  document.getElementById('btnLoad').addEventListener('click',  () => document.getElementById('fileInput').click());
   document.getElementById('btnSave').addEventListener('click',  saveAll);
+  document.getElementById('fileInput').addEventListener('change', loadFile);
 
   // PDF 모달
   document.getElementById('btnPdfCancel').addEventListener('click',  () => document.getElementById('pdfModal').classList.remove('show'));
@@ -880,6 +885,44 @@ function updateTabBadge(tid) {
   if (!el) return;
   const tab = tabList.find(t => t.id === tid);
   el.textContent = tab ? countTabRows(tab) : 0;
+}
+
+/* ══════════════════════════════════════════
+   불러오기
+══════════════════════════════════════════ */
+function loadFile(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    try {
+      const p = JSON.parse(ev.target.result);
+      if (!p.tabList) { showToast('❌ 올바른 저장 파일이 아닙니다.'); return; }
+
+      tabList    = p.tabList;
+      nextTabNum = p.nextTabNum || (tabList.length + 1);
+      currentTabId = tabList[0]?.id || '';
+
+      if (p.farm) {
+        const m = {farmName:'name',writeDate:'date',writer:'writer',scale:'scale',breed:'breed',houses:'houses'};
+        Object.entries(m).forEach(([elId, key]) => {
+          if (p.farm[key]) document.getElementById(elId).value = p.farm[key];
+        });
+      }
+
+      // localStorage에도 반영
+      localStorage.setItem('ghfarm_data', JSON.stringify(p));
+      localStorage.setItem('ghfarm_version', DATA_VERSION);
+
+      renderAll();
+      showToast(`"${file.name}" 불러오기 완료!`);
+    } catch(err) {
+      showToast('❌ 파일을 읽는 중 오류가 발생했습니다.');
+    }
+    // input 초기화 (같은 파일 재선택 가능)
+    e.target.value = '';
+  };
+  reader.readAsText(file);
 }
 
 /* ══════════════════════════════════════════
