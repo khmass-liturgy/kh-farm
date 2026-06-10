@@ -43,25 +43,43 @@ header h1 span{font-size:11px;opacity:.7;font-weight:300;margin-left:6px;}
 .farm-info-item input{width:100%;border:1px solid var(--border);border-radius:6px;padding:5px 8px;font-size:13px;font-family:inherit;color:var(--text);background:var(--surface2);}
 .farm-info-item input:focus{outline:none;border-color:var(--accent);}
 
-/* ── Tabs ── */
-.tabs{display:flex;gap:4px;margin-bottom:16px;flex-wrap:wrap;}
-.tab-btn{padding:8px 16px;border:1px solid var(--border);border-radius:8px;background:var(--surface);color:var(--text-mid);font-size:13px;font-weight:500;cursor:pointer;font-family:inherit;transition:all .15s;display:flex;align-items:center;gap:5px;}
+/* ── Tab bar ── */
+.tab-bar-wrap{display:flex;align-items:flex-start;gap:6px;margin-bottom:16px;flex-wrap:wrap;}
+
+/* 탭 버튼 그룹 */
+.tabs{display:flex;gap:4px;flex-wrap:wrap;flex:1;}
+
+/* 개별 탭 래퍼 - 버튼 + × 버튼 묶음 */
+.tab-item{position:relative;display:flex;align-items:center;}
+.tab-btn{padding:8px 14px;border:1px solid var(--border);border-radius:8px;background:var(--surface);color:var(--text-mid);font-size:13px;font-weight:500;cursor:pointer;font-family:inherit;transition:all .15s;display:flex;align-items:center;gap:5px;white-space:nowrap;}
 .tab-btn:hover{border-color:var(--accent);color:var(--accent);}
 .tab-btn.active{background:var(--accent);color:#fff;border-color:var(--accent);font-weight:700;}
 .tab-badge{background:var(--accent-light);color:var(--accent);border-radius:10px;padding:1px 6px;font-size:11px;font-weight:700;}
 .tab-btn.active .tab-badge{background:rgba(255,255,255,.25);color:#fff;}
+
+/* 탭 이름 편집 */
+.tab-name-text{cursor:pointer;}
+.tab-name-text:hover{text-decoration:underline dotted;}
+.tab-btn.active .tab-name-text:hover{text-decoration:underline dotted rgba(255,255,255,.7);}
+
+/* 탭 삭제 버튼 (× 는 active일 때만 보임) */
+.tab-del-btn{display:none;position:absolute;top:-6px;right:-6px;width:18px;height:18px;border-radius:50%;background:var(--danger);color:#fff;border:2px solid #fff;font-size:10px;font-weight:700;cursor:pointer;align-items:center;justify-content:center;line-height:1;z-index:10;}
+.tab-item:hover .tab-del-btn{display:flex;}
+
+/* + 탭 추가 버튼 */
+.btn-add-tab{padding:8px 12px;border:1px dashed var(--accent);border-radius:8px;background:var(--surface);color:var(--accent);font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .15s;white-space:nowrap;flex-shrink:0;}
+.btn-add-tab:hover{background:var(--accent-light);}
 
 /* ── Section panels ── */
 .section-panel{display:none;}
 .section-panel.active{display:block;}
 
 /* ── Section card ── */
-.section-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;margin-bottom:14px;overflow:visible;box-shadow:var(--shadow);}
+.section-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;margin-bottom:14px;box-shadow:var(--shadow);}
 .section-card-header{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:var(--surface2);border-bottom:1px solid var(--border-light);border-radius:12px 12px 0 0;user-select:none;}
 .section-card.collapsed .section-card-header{border-radius:12px;border-bottom:none;}
 .section-title-left{display:flex;align-items:center;gap:8px;flex:1;}
 .section-number{width:24px;height:24px;background:var(--accent);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;}
-/* 섹션 이름 - 클릭 편집 */
 .section-name-wrap{display:flex;align-items:center;gap:6px;flex:1;}
 .section-name{font-size:14px;font-weight:700;cursor:pointer;padding:2px 4px;border-radius:4px;}
 .section-name:hover{background:rgba(74,124,89,.1);}
@@ -72,9 +90,7 @@ header h1 span{font-size:11px;opacity:.7;font-weight:300;margin-left:6px;}
 .btn-section-del:hover{color:var(--danger);background:var(--danger-light);}
 .collapse-icon{font-size:11px;color:var(--text-soft);transition:transform .2s;cursor:pointer;padding:3px 6px;}
 .section-card.collapsed .collapse-icon{transform:rotate(-90deg);}
-
-/* ── Section body ── */
-.section-card-body{overflow:hidden;}
+.section-card-body{}
 .section-card.collapsed .section-card-body{display:none;}
 
 /* ── Table ── */
@@ -83,12 +99,11 @@ header h1 span{font-size:11px;opacity:.7;font-weight:300;margin-left:6px;}
 .rows-table td{padding:7px 11px;border-bottom:1px solid var(--border-light);vertical-align:middle;font-size:13px;}
 .rows-table tr:last-child td{border-bottom:none;}
 .rows-table tr:hover td{background:var(--accent-light);}
-.rows-table input[type="text"],.rows-table select{width:100%;border:1px solid var(--border);border-radius:5px;padding:5px 7px;font-size:12px;font-family:inherit;color:var(--text);background:var(--surface2);}
-.rows-table input:focus,.rows-table select:focus{outline:none;border-color:var(--accent);background:#fff;}
+.rows-table input[type="text"]{width:100%;border:1px solid var(--border);border-radius:5px;padding:5px 7px;font-size:12px;font-family:inherit;color:var(--text);background:var(--surface2);}
+.rows-table input:focus{outline:none;border-color:var(--accent);background:#fff;}
 .col-no{width:34px;color:var(--text-soft);font-size:12px;text-align:center;}
-.col-gubun{width:98px;}
-.col-content{min-width:180px;}
-
+.col-gubun{width:100px;}
+.col-content{min-width:200px;}
 .col-note{width:150px;}
 .col-action{width:40px;text-align:center;}
 
@@ -97,8 +112,6 @@ header h1 span{font-size:11px;opacity:.7;font-weight:300;margin-left:6px;}
 .btn-add-row:hover{background:var(--accent);color:#fff;}
 .btn-del{background:none;border:none;color:#ccc;font-size:14px;cursor:pointer;padding:3px 6px;border-radius:4px;transition:all .15s;}
 .btn-del:hover{color:var(--danger);background:var(--danger-light);}
-
-/* ── Add section button ── */
 .btn-add-section{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;padding:11px;background:var(--surface);color:var(--accent);border:2px dashed var(--accent);border-radius:12px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;margin-bottom:4px;transition:all .15s;}
 .btn-add-section:hover{background:var(--accent-light);}
 
@@ -106,10 +119,10 @@ header h1 span{font-size:11px;opacity:.7;font-weight:300;margin-left:6px;}
 #toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(14px);background:var(--accent);color:#fff;padding:10px 24px;border-radius:10px;font-size:13px;font-weight:600;box-shadow:var(--shadow-lg);opacity:0;pointer-events:none;transition:all .3s;z-index:999;}
 #toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 
-/* ── Confirm Modal (섹션 삭제 확인) ── */
+/* ── Modals ── */
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:300;align-items:center;justify-content:center;}
 .modal-overlay.show{display:flex;}
-.modal-box{background:#fff;border-radius:14px;padding:26px;width:340px;box-shadow:0 20px 60px rgba(0,0,0,.25);}
+.modal-box{background:#fff;border-radius:14px;padding:26px;width:360px;box-shadow:0 20px 60px rgba(0,0,0,.25);}
 .modal-box h2{font-size:15px;font-weight:700;margin-bottom:8px;}
 .modal-box p{font-size:13px;color:var(--text-mid);margin-bottom:20px;line-height:1.6;}
 .modal-options{display:flex;flex-direction:column;gap:8px;margin-bottom:20px;}
@@ -126,6 +139,10 @@ header h1 span{font-size:11px;opacity:.7;font-weight:300;margin-left:6px;}
 .modal-confirm-danger{background:var(--danger);}
 .modal-confirm-danger:hover{background:#a03030;}
 
+/* 탭 이름 편집 인풋 (모달 안) */
+.modal-input{width:100%;border:1.5px solid var(--border);border-radius:7px;padding:9px 11px;font-size:14px;font-family:inherit;color:var(--text);margin-bottom:18px;}
+.modal-input:focus{outline:none;border-color:var(--accent);}
+
 /* ── Print ── */
 @media print{
   @page{size:A4;margin:13mm 10mm;}
@@ -136,16 +153,9 @@ header h1 span{font-size:11px;opacity:.7;font-weight:300;margin-left:6px;}
   .container{max-width:100%!important;padding:0!important;}
   .farm-info-bar{display:grid!important;grid-template-columns:repeat(3,1fr)!important;gap:4px 12px!important;padding:8px 11px!important;margin-bottom:10px!important;box-shadow:none!important;border:1px solid #ccc!important;}
   .farm-info-item input{border:none!important;background:transparent!important;padding:0!important;font-weight:600;}
-  .tabs,.btn-add-section,.btn-add-row,.col-action,.btn-section-del,#toast,.modal-overlay{display:none!important;}
+  .tab-bar-wrap,.btn-add-section,.btn-add-row,.col-action,.btn-section-del,#toast,.modal-overlay{display:none!important;}
   .section-panel{display:block!important;}
-  .section-panel::before{display:block;font-size:11pt;font-weight:700;color:#4a7c59;border-bottom:2px solid #4a7c59;padding-bottom:3px;margin:12px 0 7px;}
-  #tab1::before{content:"1. 입추준비";}
-  #tab2::before{content:"2. 입추";}
-  #tab3::before{content:"3. 산란전";}
-  #tab4::before{content:"4. 산란중";}
-  #tab5::before{content:"5. 겨울철 계사 관리";}
-  #tab6::before{content:"6. 주요 검사";}
-  #tab7::before{content:"7. 교육 및 검사";}
+  .section-panel-print-title{display:block;font-size:11pt;font-weight:700;color:#4a7c59;border-bottom:2px solid #4a7c59;padding-bottom:3px;margin:12px 0 7px;}
   .section-card{box-shadow:none!important;border:1px solid #ccc!important;border-radius:3px!important;margin-bottom:7px!important;page-break-inside:avoid;}
   .section-card.collapsed .section-card-body{display:block!important;}
   .section-card-header{background:#e8f0eb!important;padding:5px 9px!important;}
@@ -153,7 +163,7 @@ header h1 span{font-size:11px;opacity:.7;font-weight:300;margin-left:6px;}
   .section-name-input{display:none!important;}
   .rows-table th{background:#f0f0f0!important;font-size:8pt!important;padding:3px 6px!important;}
   .rows-table td{padding:3px 6px!important;font-size:9pt!important;}
-  .rows-table input[type="text"],.rows-table select{border:none!important;background:transparent!important;padding:0!important;font-size:9pt!important;-webkit-appearance:none;appearance:none;}
+  .rows-table input[type="text"]{border:none!important;background:transparent!important;padding:0!important;font-size:9pt!important;}
   .section-number{background:#4a7c59!important;color:#fff!important;}
 }
 @media(max-width:768px){.container{padding:12px 8px;}.col-note{display:none;}}
@@ -177,7 +187,7 @@ header h1 span{font-size:11px;opacity:.7;font-weight:300;margin-left:6px;}
 <div class="modal-overlay" id="pdfModal">
   <div class="modal-box">
     <h2>📄 PDF 출력 옵션</h2>
-    <p>출력할 범위를 선택하세요.<br>브라우저 인쇄 창에서 "PDF로 저장"을 선택하면 PDF가 생성됩니다.</p>
+    <p>출력할 범위를 선택하세요.<br>인쇄 창에서 "PDF로 저장"을 선택하면 PDF가 생성됩니다.</p>
     <div class="modal-options">
       <label class="modal-opt"><input type="radio" name="pdfRange" value="all" checked><div><div class="modal-opt-label">📋 전체 출력</div><div class="modal-opt-desc">모든 탭 내용을 한 번에</div></div></label>
       <label class="modal-opt"><input type="radio" name="pdfRange" value="current"><div><div class="modal-opt-label">📑 현재 탭만</div><div class="modal-opt-desc">지금 보고 있는 탭만</div></div></label>
@@ -189,14 +199,38 @@ header h1 span{font-size:11px;opacity:.7;font-weight:300;margin-left:6px;}
   </div>
 </div>
 
-<!-- 섹션 삭제 확인 모달 -->
-<div class="modal-overlay" id="delModal">
+<!-- 섹션 삭제 확인 -->
+<div class="modal-overlay" id="delSecModal">
   <div class="modal-box">
     <h2>⚠️ 섹션 삭제</h2>
-    <p id="delModalMsg">이 섹션을 삭제할까요?<br>포함된 모든 항목이 함께 삭제됩니다.</p>
+    <p id="delSecMsg">이 섹션을 삭제할까요?</p>
     <div class="modal-btns">
-      <button class="modal-cancel" id="btnDelCancel">취소</button>
-      <button class="modal-confirm modal-confirm-danger" id="btnDelConfirm">삭제</button>
+      <button class="modal-cancel" id="btnDelSecCancel">취소</button>
+      <button class="modal-confirm modal-confirm-danger" id="btnDelSecConfirm">삭제</button>
+    </div>
+  </div>
+</div>
+
+<!-- 탭 삭제 확인 -->
+<div class="modal-overlay" id="delTabModal">
+  <div class="modal-box">
+    <h2>⚠️ 탭 삭제</h2>
+    <p id="delTabMsg">이 탭을 삭제할까요?</p>
+    <div class="modal-btns">
+      <button class="modal-cancel" id="btnDelTabCancel">취소</button>
+      <button class="modal-confirm modal-confirm-danger" id="btnDelTabConfirm">삭제</button>
+    </div>
+  </div>
+</div>
+
+<!-- 탭 이름 편집 모달 -->
+<div class="modal-overlay" id="tabNameModal">
+  <div class="modal-box">
+    <h2>✏️ 탭 이름 수정</h2>
+    <input type="text" class="modal-input" id="tabNameInput" placeholder="탭 이름 입력">
+    <div class="modal-btns">
+      <button class="modal-cancel" id="btnTabNameCancel">취소</button>
+      <button class="modal-confirm" id="btnTabNameConfirm">저장</button>
     </div>
   </div>
 </div>
@@ -212,38 +246,27 @@ header h1 span{font-size:11px;opacity:.7;font-weight:300;margin-left:6px;}
     <div class="farm-info-item"><label>계사 동수</label><input type="text" id="houses" placeholder="예: 3동"></div>
   </div>
 
-  <!-- Tabs -->
-  <div class="tabs" id="tabBar">
-    <button class="tab-btn active" data-tab="tab1">🔧 입추준비 <span class="tab-badge" id="cnt1">0</span></button>
-    <button class="tab-btn" data-tab="tab2">🐣 입추 <span class="tab-badge" id="cnt2">0</span></button>
-    <button class="tab-btn" data-tab="tab3">📦 산란전 <span class="tab-badge" id="cnt3">0</span></button>
-    <button class="tab-btn" data-tab="tab4">🥚 산란중 <span class="tab-badge" id="cnt4">0</span></button>
-    <button class="tab-btn" data-tab="tab5">❄️ 겨울철 <span class="tab-badge" id="cnt5">0</span></button>
-    <button class="tab-btn" data-tab="tab6">🔬 주요검사 <span class="tab-badge" id="cnt6">0</span></button>
-    <button class="tab-btn" data-tab="tab7">📚 교육·검사 <span class="tab-badge" id="cnt7">0</span></button>
+  <!-- Tab bar (동적 렌더) -->
+  <div class="tab-bar-wrap" id="tabBarWrap">
+    <div class="tabs" id="tabBar"></div>
+    <button class="btn-add-tab" id="btnAddTab">＋ 탭 추가</button>
   </div>
 
-  <!-- 탭 패널은 JS로 동적 렌더링 -->
-  <div id="tab1" class="section-panel active"></div>
-  <div id="tab2" class="section-panel"></div>
-  <div id="tab3" class="section-panel"></div>
-  <div id="tab4" class="section-panel"></div>
-  <div id="tab5" class="section-panel"></div>
-  <div id="tab6" class="section-panel"></div>
-  <div id="tab7" class="section-panel"></div>
+  <!-- 패널 컨테이너 -->
+  <div id="panelContainer"></div>
 </div>
 
 <div id="toast"></div>
 
 <script>
-/* ════════════════════════════════════════════
+/* ══════════════════════════════════════════
    상수 & 기본 데이터
-════════════════════════════════════════════ */
-const DATA_VERSION = 'v5';
+══════════════════════════════════════════ */
+const DATA_VERSION = 'v6';
 
-// 탭별 기본 섹션 정의 { name, rows[] }
-const INIT_TABS = {
-  tab1:[
+// tabList: [{id, label, sections:[{name, rows:[{gubun,content,note}]}]}]
+const INIT_TABS = [
+  { id:'tab1', label:'🔧 입추준비', sections:[
     {name:'계분 반출 및 청소', rows:[
       {gubun:'계분 반출',content:'계사 내부 먼지 청소',note:''},
       {gubun:'계분 반출',content:'사료라인 잔여사료 배출 처리',note:''},
@@ -274,8 +297,8 @@ const INIT_TABS = {
       {gubun:'실리카 도포',content:'실리카 도포 : 산란상자, 횃대 등',note:''},
       {gubun:'등라인',content:'점검 및 교체',note:''},
     ]},
-  ],
-  tab2:[
+  ]},
+  { id:'tab2', label:'🐣 입추', sections:[
     {name:'입추시 관리', rows:[
       {gubun:'입추시',content:'체중, 균일도 체크 (80~85%)',note:''},
       {gubun:'입추시',content:'걸음걸이, 활력도 등 건강 체크',note:''},
@@ -289,8 +312,8 @@ const INIT_TABS = {
       {gubun:'예방백신',content:'SG9R 생독백신 실시 : 100일',note:'SG9R'},
       {gubun:'예방백신',content:'ABBNE 백신실시 : 110일',note:'PABEN-Q'},
     ]},
-  ],
-  tab3:[
+  ]},
+  { id:'tab3', label:'📦 산란전', sections:[
     {name:'산란 준비', rows:[
       {gubun:'산란준비',content:'사각지역 차단망 설치',note:''},
       {gubun:'산란준비',content:'어두운곳 등 설치, 반사필름 설치',note:''},
@@ -299,8 +322,8 @@ const INIT_TABS = {
       {gubun:'산란준비',content:'점등 시작 (타이머 점검)',note:''},
       {gubun:'산란준비',content:'산란예비 사료 급여 (1~2회)',note:'산란예비 사료'},
     ]},
-  ],
-  tab4:[
+  ]},
+  { id:'tab4', label:'🥚 산란중', sections:[
     {name:'산란 사양관리', rows:[
       {gubun:'산란 사양',content:'단계별 산란사료 급이',note:''},
       {gubun:'산란 사양',content:'음수백신시 중화제 사용',note:'※ 음수백신 : 중화제 사용'},
@@ -324,8 +347,8 @@ const INIT_TABS = {
       {gubun:'~70주',content:'웰빙4',note:''},
       {gubun:'70주 이상',content:'웰빙5',note:''},
     ]},
-  ],
-  tab5:[
+  ]},
+  { id:'tab5', label:'❄️ 겨울철', sections:[
     {name:'겨울철 계사 관리', rows:[
       {gubun:'겨울철 계사',content:'계분 일부 반출, 왕겨 보충',note:''},
       {gubun:'겨울철 계사',content:'측면 비닐 설치 및 환풍기 점검',note:''},
@@ -336,8 +359,8 @@ const INIT_TABS = {
       {gubun:'겨울철 계사',content:'계사 틈새 관리 철저 : 샛바람',note:''},
       {gubun:'겨울철 계사',content:'왕겨 수시 보충',note:''},
     ]},
-  ],
-  tab6:[
+  ]},
+  { id:'tab6', label:'🔬 주요검사', sections:[
     {name:'주요 검사 항목', rows:[
       {gubun:'SE검사',content:'HACCP 대비 SE검사',note:''},
       {gubun:'SE검사',content:'중추 입추시 SE 성적서 확인',note:''},
@@ -345,8 +368,8 @@ const INIT_TABS = {
       {gubun:'품질검사',content:'자가품질 검사 : 반기 1회 (위생시험소)',note:''},
       {gubun:'출하검사',content:'출하전 살충제 검사',note:''},
     ]},
-  ],
-  tab7:[
+  ]},
+  { id:'tab7', label:'📚 교육·검사', sections:[
     {name:'교육', rows:[
       {gubun:'교육',content:'무항생제축산물 교육',note:''},
       {gubun:'교육',content:'HACCP 교육',note:''},
@@ -358,163 +381,133 @@ const INIT_TABS = {
       {gubun:'수질검사',content:'수질검사 : 매년',note:''},
       {gubun:'전기안전',content:'전기안전검사 : 1회/2년',note:''},
     ]},
-  ],
-};
+  ]},
+];
 
-/* ════════════════════════════════════════════
+/* ══════════════════════════════════════════
    상태
-════════════════════════════════════════════ */
-// tabData[tabId] = [ {name, rows:[{gubun,content,note}]}, ... ]
-let tabData = {};
-let currentTabId = 'tab1';
-let pendingDelTab = null;
-let pendingDelSecIdx = null;
+══════════════════════════════════════════ */
+let tabList = [];          // [{id, label, sections}]
+let currentTabId = '';
+let nextTabNum = 8;        // 새 탭 ID 카운터
+let pendingDelSecTab = null, pendingDelSecIdx = null;
+let pendingDelTabId  = null;
+let editingTabId     = null;
 let printMode = 'current';
 
-/* ════════════════════════════════════════════
+/* ══════════════════════════════════════════
    초기화
-════════════════════════════════════════════ */
+══════════════════════════════════════════ */
 function init() {
   document.getElementById('writeDate').value = new Date().toISOString().split('T')[0];
-
   if (localStorage.getItem('ghfarm_version') !== DATA_VERSION) {
     localStorage.removeItem('ghfarm_data');
     localStorage.setItem('ghfarm_version', DATA_VERSION);
   }
-
   const saved = localStorage.getItem('ghfarm_data');
   if (saved) {
     try {
       const p = JSON.parse(saved);
-      tabData = p.tabs || deepCopy(INIT_TABS);
+      tabList  = p.tabList  || deepCopy(INIT_TABS);
+      nextTabNum = p.nextTabNum || (tabList.length + 1);
       if (p.farm) {
-        ['farmName','writeDate','writer','scale','breed','houses'].forEach(id => {
-          const key = id === 'farmName' ? 'name' : id;
-          if (p.farm[key]) document.getElementById(id).value = p.farm[key];
-        });
+        const m = {farmName:'name',writeDate:'date',writer:'writer',scale:'scale',breed:'breed',houses:'houses'};
+        Object.entries(m).forEach(([elId, key]) => { if(p.farm[key]) document.getElementById(elId).value = p.farm[key]; });
       }
-    } catch(e) { tabData = deepCopy(INIT_TABS); }
+    } catch(e) { tabList = deepCopy(INIT_TABS); }
   } else {
-    tabData = deepCopy(INIT_TABS);
+    tabList = deepCopy(INIT_TABS);
   }
-
-  Object.keys(tabData).forEach(tid => renderTab(tid));
-  updateAllCounts();
-  bindStaticEvents();
+  currentTabId = tabList[0]?.id || '';
+  renderAll();
+  bindEvents();
 }
 
-function deepCopy(o) { return JSON.parse(JSON.stringify(o)); }
+function deepCopy(o){ return JSON.parse(JSON.stringify(o)); }
 
-/* ════════════════════════════════════════════
-   정적 이벤트 (한 번만 바인딩)
-════════════════════════════════════════════ */
-function bindStaticEvents() {
-  // 탭 전환
-  document.querySelectorAll('.tab-btn').forEach(btn => {
-    btn.addEventListener('click', () => switchTab(btn.dataset.tab, btn));
+/* ══════════════════════════════════════════
+   전체 렌더링
+══════════════════════════════════════════ */
+function renderAll() {
+  renderTabBar();
+  renderPanels();
+}
+
+/* ── 탭 바 렌더 ── */
+function renderTabBar() {
+  const bar = document.getElementById('tabBar');
+  bar.innerHTML = '';
+  tabList.forEach(tab => {
+    const item = document.createElement('div');
+    item.className = 'tab-item';
+
+    const btn = document.createElement('button');
+    btn.className = 'tab-btn' + (tab.id === currentTabId ? ' active' : '');
+    btn.dataset.tabId = tab.id;
+
+    const nameSpan = document.createElement('span');
+    nameSpan.className = 'tab-name-text';
+    nameSpan.title = '더블클릭하여 이름 수정';
+    nameSpan.textContent = tab.label;
+
+    const badge = document.createElement('span');
+    badge.className = 'tab-badge';
+    badge.id = 'cnt_' + tab.id;
+    badge.textContent = countTabRows(tab);
+
+    btn.append(nameSpan, badge);
+
+    // 탭 삭제 버튼
+    const delBtn = document.createElement('button');
+    delBtn.className = 'tab-del-btn';
+    delBtn.title = '탭 삭제';
+    delBtn.textContent = '×';
+    delBtn.dataset.tabId = tab.id;
+
+    item.append(btn, delBtn);
+    bar.appendChild(item);
   });
+}
 
-  // 헤더 버튼
-  document.getElementById('btnPrint').addEventListener('click', () => { printMode='current'; executePrint(); });
-  document.getElementById('btnPdf').addEventListener('click',   () => document.getElementById('pdfModal').classList.add('show'));
-  document.getElementById('btnSave').addEventListener('click',  saveAll);
+/* ── 패널 렌더 ── */
+function renderPanels() {
+  const container = document.getElementById('panelContainer');
+  container.innerHTML = '';
+  tabList.forEach(tab => {
+    const panel = document.createElement('div');
+    panel.className = 'section-panel' + (tab.id === currentTabId ? ' active' : '');
+    panel.id = 'panel_' + tab.id;
 
-  // PDF 모달
-  document.getElementById('btnPdfCancel').addEventListener('click',  () => document.getElementById('pdfModal').classList.remove('show'));
-  document.getElementById('btnPdfConfirm').addEventListener('click', doPrint);
+    // 인쇄용 제목
+    const printTitle = document.createElement('div');
+    printTitle.className = 'section-panel-print-title';
+    printTitle.textContent = tab.label;
+    panel.appendChild(printTitle);
 
-  // 섹션 삭제 확인 모달
-  document.getElementById('btnDelCancel').addEventListener('click',  () => document.getElementById('delModal').classList.remove('show'));
-  document.getElementById('btnDelConfirm').addEventListener('click', confirmDelSection);
-
-  // 이벤트 위임 - 동적 버튼 처리
-  document.body.addEventListener('click', e => {
-    // 행 추가
-    const addRowBtn = e.target.closest('.btn-add-row');
-    if (addRowBtn) { addRow(addRowBtn.dataset.tab, parseInt(addRowBtn.dataset.sidx)); return; }
-
-    // 행 삭제
-    const delRowBtn = e.target.closest('.btn-del[data-row]');
-    if (delRowBtn) { delRow(delRowBtn.dataset.tab, parseInt(delRowBtn.dataset.sidx), parseInt(delRowBtn.dataset.row)); return; }
-
-    // 섹션 접기
-    const collapseBtn = e.target.closest('.collapse-icon');
-    if (collapseBtn) { collapseBtn.closest('.section-card').classList.toggle('collapsed'); return; }
-
-    // 섹션 삭제 버튼
-    const delSecBtn = e.target.closest('.btn-section-del');
-    if (delSecBtn) { openDelModal(delSecBtn.dataset.tab, parseInt(delSecBtn.dataset.sidx)); return; }
+    tab.sections.forEach((sec, sidx) => panel.appendChild(buildSectionCard(tab.id, sidx, sec)));
 
     // 섹션 추가 버튼
-    const addSecBtn = e.target.closest('.btn-add-section');
-    if (addSecBtn) { addSection(addSecBtn.dataset.tab); return; }
-  });
+    const addBtn = document.createElement('button');
+    addBtn.className = 'btn-add-section';
+    addBtn.dataset.tabId = tab.id;
+    addBtn.textContent = '+ 항목 섹션 추가';
+    panel.appendChild(addBtn);
 
-  // 섹션 이름 인라인 편집 (이벤트 위임)
-  document.body.addEventListener('click', e => {
-    const nameEl = e.target.closest('.section-name');
-    if (nameEl) { startEditName(nameEl); return; }
-  });
-
-  document.body.addEventListener('keydown', e => {
-    if (e.target.classList.contains('section-name-input')) {
-      if (e.key === 'Enter') { e.target.blur(); }
-      if (e.key === 'Escape') { e.target.dataset.cancel = '1'; e.target.blur(); }
-    }
-  });
-
-  document.body.addEventListener('blur', e => {
-    if (e.target.classList.contains('section-name-input')) {
-      finishEditName(e.target);
-    }
-  }, true);
-
-  // input/select 변경 (이벤트 위임)
-  document.body.addEventListener('change', e => {
-    const el = e.target;
-    if (!el.dataset.tab || !el.dataset.sidx || !el.dataset.row || !el.dataset.field) return;
-    const {tab, sidx, row, field} = el.dataset;
-    const sec = tabData[tab]?.[parseInt(sidx)];
-    if (sec && sec.rows[parseInt(row)]) {
-      sec.rows[parseInt(row)][field] = el.value;
-    }
+    container.appendChild(panel);
   });
 }
 
-/* ════════════════════════════════════════════
-   탭 렌더링
-════════════════════════════════════════════ */
-function renderTab(tid) {
-  const panel = document.getElementById(tid);
-  if (!panel) return;
-  panel.innerHTML = '';
-
-  const sections = tabData[tid] || [];
-  sections.forEach((sec, sidx) => {
-    panel.appendChild(buildSectionCard(tid, sidx, sec));
-  });
-
-  // 섹션 추가 버튼
-  const addBtn = document.createElement('button');
-  addBtn.className = 'btn-add-section';
-  addBtn.dataset.tab = tid;
-  addBtn.textContent = '+ 항목 섹션 추가';
-  panel.appendChild(addBtn);
-
-  updateTabCount(tid);
-}
-
+/* ── 섹션 카드 빌드 ── */
 function buildSectionCard(tid, sidx, sec) {
   const card = document.createElement('div');
   card.className = 'section-card';
-  card.id = `card_${tid}_${sidx}`;
 
-  /* ─ 헤더 ─ */
+  // 헤더
   const hdr = document.createElement('div');
   hdr.className = 'section-card-header';
 
-  const titleLeft = document.createElement('div');
-  titleLeft.className = 'section-title-left';
+  const left = document.createElement('div');
+  left.className = 'section-title-left';
 
   const numEl = document.createElement('div');
   numEl.className = 'section-number';
@@ -527,22 +520,23 @@ function buildSectionCard(tid, sidx, sec) {
   nameEl.className = 'section-name';
   nameEl.title = '클릭하여 이름 수정';
   nameEl.textContent = sec.name;
-  nameEl.dataset.tab  = tid;
+  nameEl.dataset.tid  = tid;
   nameEl.dataset.sidx = sidx;
 
   const nameInput = document.createElement('input');
   nameInput.type = 'text';
   nameInput.className = 'section-name-input';
   nameInput.value = sec.name;
-  nameInput.dataset.tab  = tid;
+  nameInput.dataset.tid  = tid;
   nameInput.dataset.sidx = sidx;
 
   const countEl = document.createElement('span');
   countEl.className = 'section-count';
   countEl.id = `sc_${tid}_${sidx}`;
+  countEl.textContent = sec.rows.length > 0 ? `(${sec.rows.length}개)` : '';
 
   nameWrap.append(nameEl, nameInput, countEl);
-  titleLeft.append(numEl, nameWrap);
+  left.append(numEl, nameWrap);
 
   const rightBtns = document.createElement('div');
   rightBtns.className = 'section-header-btns';
@@ -551,7 +545,7 @@ function buildSectionCard(tid, sidx, sec) {
   delSecBtn.className = 'btn-section-del';
   delSecBtn.title = '섹션 삭제';
   delSecBtn.textContent = '🗑';
-  delSecBtn.dataset.tab  = tid;
+  delSecBtn.dataset.tid  = tid;
   delSecBtn.dataset.sidx = sidx;
 
   const collapseIcon = document.createElement('span');
@@ -559,9 +553,9 @@ function buildSectionCard(tid, sidx, sec) {
   collapseIcon.textContent = '▼';
 
   rightBtns.append(delSecBtn, collapseIcon);
-  hdr.append(titleLeft, rightBtns);
+  hdr.append(left, rightBtns);
 
-  /* ─ 바디 ─ */
+  // 바디
   const body = document.createElement('div');
   body.className = 'section-card-body';
 
@@ -582,154 +576,315 @@ function buildSectionCard(tid, sidx, sec) {
 
   const addRowBtn = document.createElement('button');
   addRowBtn.className = 'btn-add-row';
-  addRowBtn.dataset.tab  = tid;
+  addRowBtn.dataset.tid  = tid;
   addRowBtn.dataset.sidx = sidx;
   addRowBtn.textContent = '+ 항목 추가';
 
   body.append(table, addRowBtn);
   card.append(hdr, body);
-
-  updateSectionCount(tid, sidx);
   return card;
 }
 
+/* ── 행 빌드 ── */
 function buildRow(tid, sidx, ridx, r) {
   const tr = document.createElement('tr');
   tr.innerHTML = `
     <td class="col-no">${ridx+1}</td>
-    <td class="col-gubun"><input type="text" value="${esc(r.gubun)}"   data-tab="${tid}" data-sidx="${sidx}" data-row="${ridx}" data-field="gubun"></td>
-    <td class="col-content"><input type="text" value="${esc(r.content)}" data-tab="${tid}" data-sidx="${sidx}" data-row="${ridx}" data-field="content"></td>
-    <td class="col-note"><input type="text" value="${esc(r.note)}"    data-tab="${tid}" data-sidx="${sidx}" data-row="${ridx}" data-field="note"></td>
-    <td class="col-action"><button class="btn-del" data-tab="${tid}" data-sidx="${sidx}" data-row="${ridx}" title="삭제">✕</button></td>`;
+    <td class="col-gubun"><input type="text" value="${esc(r.gubun)}"   data-tid="${tid}" data-sidx="${sidx}" data-ridx="${ridx}" data-field="gubun"></td>
+    <td class="col-content"><input type="text" value="${esc(r.content)}" data-tid="${tid}" data-sidx="${sidx}" data-ridx="${ridx}" data-field="content"></td>
+    <td class="col-note"><input type="text" value="${esc(r.note)}"    data-tid="${tid}" data-sidx="${sidx}" data-ridx="${ridx}" data-field="note"></td>
+    <td class="col-action"><button class="btn-del" data-tid="${tid}" data-sidx="${sidx}" data-ridx="${ridx}">✕</button></td>`;
   return tr;
 }
 
-/* ════════════════════════════════════════════
-   섹션 이름 인라인 편집
-════════════════════════════════════════════ */
-function startEditName(nameEl) {
-  const wrap   = nameEl.closest('.section-name-wrap');
-  const input  = wrap.querySelector('.section-name-input');
-  input.value  = nameEl.textContent;
+/* ══════════════════════════════════════════
+   이벤트 바인딩
+══════════════════════════════════════════ */
+function bindEvents() {
+  // 헤더 버튼
+  document.getElementById('btnPrint').addEventListener('click', () => { printMode='current'; executePrint(); });
+  document.getElementById('btnPdf').addEventListener('click',   () => document.getElementById('pdfModal').classList.add('show'));
+  document.getElementById('btnSave').addEventListener('click',  saveAll);
+
+  // PDF 모달
+  document.getElementById('btnPdfCancel').addEventListener('click',  () => document.getElementById('pdfModal').classList.remove('show'));
+  document.getElementById('btnPdfConfirm').addEventListener('click', doPrint);
+
+  // 섹션 삭제 모달
+  document.getElementById('btnDelSecCancel').addEventListener('click',  () => document.getElementById('delSecModal').classList.remove('show'));
+  document.getElementById('btnDelSecConfirm').addEventListener('click', confirmDelSection);
+
+  // 탭 삭제 모달
+  document.getElementById('btnDelTabCancel').addEventListener('click',  () => document.getElementById('delTabModal').classList.remove('show'));
+  document.getElementById('btnDelTabConfirm').addEventListener('click', confirmDelTab);
+
+  // 탭 이름 모달
+  document.getElementById('btnTabNameCancel').addEventListener('click',  () => document.getElementById('tabNameModal').classList.remove('show'));
+  document.getElementById('btnTabNameConfirm').addEventListener('click', confirmTabName);
+  document.getElementById('tabNameInput').addEventListener('keydown', e => {
+    if (e.key === 'Enter') confirmTabName();
+  });
+
+  // 탭 추가
+  document.getElementById('btnAddTab').addEventListener('click', addTab);
+
+  // 위임 이벤트
+  document.body.addEventListener('click', e => {
+    // 탭 전환 (탭 버튼 클릭)
+    const tabBtn = e.target.closest('.tab-btn');
+    if (tabBtn && !e.target.classList.contains('tab-del-btn')) {
+      switchTab(tabBtn.dataset.tabId); return;
+    }
+    // 탭 삭제
+    const tabDelBtn = e.target.closest('.tab-del-btn');
+    if (tabDelBtn) { openDelTabModal(tabDelBtn.dataset.tabId); return; }
+
+    // 섹션 이름 클릭
+    const sName = e.target.closest('.section-name');
+    if (sName) { startEditSecName(sName); return; }
+
+    // 섹션 접기
+    const colIcon = e.target.closest('.collapse-icon');
+    if (colIcon) { colIcon.closest('.section-card').classList.toggle('collapsed'); return; }
+
+    // 섹션 삭제
+    const delSecBtn = e.target.closest('.btn-section-del');
+    if (delSecBtn) { openDelSecModal(delSecBtn.dataset.tid, parseInt(delSecBtn.dataset.sidx)); return; }
+
+    // 섹션 추가
+    const addSecBtn = e.target.closest('.btn-add-section');
+    if (addSecBtn) { addSection(addSecBtn.dataset.tabId); return; }
+
+    // 행 추가
+    const addRowBtn = e.target.closest('.btn-add-row');
+    if (addRowBtn) { addRow(addRowBtn.dataset.tid, parseInt(addRowBtn.dataset.sidx)); return; }
+
+    // 행 삭제
+    const delRowBtn = e.target.closest('.btn-del');
+    if (delRowBtn) { delRow(delRowBtn.dataset.tid, parseInt(delRowBtn.dataset.sidx), parseInt(delRowBtn.dataset.ridx)); return; }
+  });
+
+  // 탭 이름 더블클릭
+  document.body.addEventListener('dblclick', e => {
+    const nameSpan = e.target.closest('.tab-name-text');
+    if (nameSpan) {
+      const btn = nameSpan.closest('.tab-btn');
+      if (btn) openTabNameModal(btn.dataset.tabId);
+    }
+  });
+
+  // 섹션 이름 input 키/blur
+  document.body.addEventListener('keydown', e => {
+    if (e.target.classList.contains('section-name-input')) {
+      if (e.key === 'Enter')  e.target.blur();
+      if (e.key === 'Escape') { e.target.dataset.cancel = '1'; e.target.blur(); }
+    }
+  });
+  document.body.addEventListener('blur', e => {
+    if (e.target.classList.contains('section-name-input')) finishEditSecName(e.target);
+  }, true);
+
+  // 행 input 변경
+  document.body.addEventListener('change', e => {
+    const el = e.target;
+    if (!el.dataset.tid || el.dataset.sidx === undefined || el.dataset.ridx === undefined || !el.dataset.field) return;
+    const tab = tabList.find(t => t.id === el.dataset.tid);
+    const sec = tab?.sections[parseInt(el.dataset.sidx)];
+    const row = sec?.rows[parseInt(el.dataset.ridx)];
+    if (row) row[el.dataset.field] = el.value;
+  });
+}
+
+/* ══════════════════════════════════════════
+   탭 조작
+══════════════════════════════════════════ */
+function switchTab(tid) {
+  currentTabId = tid;
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tabId === tid));
+  document.querySelectorAll('.section-panel').forEach(p => p.classList.toggle('active', p.id === 'panel_' + tid));
+}
+
+function addTab() {
+  const id    = 'tab' + nextTabNum++;
+  const label = '새 탭';
+  tabList.push({id, label, sections:[]});
+  renderAll();
+  switchTab(id);
+  openTabNameModal(id);
+}
+
+function openDelTabModal(tid) {
+  if (tabList.length <= 1) { showToast('탭이 1개뿐이라 삭제할 수 없습니다.'); return; }
+  pendingDelTabId = tid;
+  const tab = tabList.find(t => t.id === tid);
+  document.getElementById('delTabMsg').innerHTML =
+    `<b>"${tab ? tab.label : ''}"</b> 탭을 삭제할까요?<br>포함된 모든 섹션과 항목이 삭제됩니다.`;
+  document.getElementById('delTabModal').classList.add('show');
+}
+
+function confirmDelTab() {
+  document.getElementById('delTabModal').classList.remove('show');
+  if (!pendingDelTabId) return;
+  const idx = tabList.findIndex(t => t.id === pendingDelTabId);
+  tabList.splice(idx, 1);
+  // 현재 탭이 삭제된 경우 앞 탭으로
+  if (currentTabId === pendingDelTabId) {
+    currentTabId = tabList[Math.max(0, idx-1)]?.id || tabList[0]?.id || '';
+  }
+  pendingDelTabId = null;
+  renderAll();
+  showToast('탭이 삭제되었습니다.');
+}
+
+function openTabNameModal(tid) {
+  editingTabId = tid;
+  const tab = tabList.find(t => t.id === tid);
+  const inp = document.getElementById('tabNameInput');
+  inp.value = tab ? tab.label : '';
+  document.getElementById('tabNameModal').classList.add('show');
+  setTimeout(() => inp.select(), 50);
+}
+
+function confirmTabName() {
+  document.getElementById('tabNameModal').classList.remove('show');
+  const val = document.getElementById('tabNameInput').value.trim();
+  if (!val || !editingTabId) return;
+  const tab = tabList.find(t => t.id === editingTabId);
+  if (tab) tab.label = val;
+  editingTabId = null;
+  renderAll();
+}
+
+/* ══════════════════════════════════════════
+   섹션 조작
+══════════════════════════════════════════ */
+function addSection(tid) {
+  const tab = tabList.find(t => t.id === tid);
+  if (!tab) return;
+  tab.sections.push({name:'새 섹션', rows:[]});
+  const sidx = tab.sections.length - 1;
+  // 패널에 새 카드만 추가 (전체 재렌더 최소화)
+  const panel = document.getElementById('panel_' + tid);
+  const addSecBtn = panel.querySelector('.btn-add-section');
+  const card = buildSectionCard(tid, sidx, tab.sections[sidx]);
+  panel.insertBefore(card, addSecBtn);
+  updateTabBadge(tid);
+  // 이름 편집 시작
+  const nameEl = card.querySelector('.section-name');
+  if (nameEl) setTimeout(() => startEditSecName(nameEl), 50);
+}
+
+function openDelSecModal(tid, sidx) {
+  pendingDelSecTab = tid;
+  pendingDelSecIdx = sidx;
+  const tab = tabList.find(t => t.id === tid);
+  const sec = tab?.sections[sidx];
+  document.getElementById('delSecMsg').innerHTML =
+    `<b>"${sec ? sec.name : ''}"</b> 섹션을 삭제할까요?<br>포함된 모든 항목이 함께 삭제됩니다.`;
+  document.getElementById('delSecModal').classList.add('show');
+}
+
+function confirmDelSection() {
+  document.getElementById('delSecModal').classList.remove('show');
+  if (pendingDelSecTab === null) return;
+  const tab = tabList.find(t => t.id === pendingDelSecTab);
+  if (tab) tab.sections.splice(pendingDelSecIdx, 1);
+  pendingDelSecTab = pendingDelSecIdx = null;
+  // 패널 재렌더
+  const panel = document.getElementById('panel_' + tab.id);
+  if (panel) {
+    panel.innerHTML = '';
+    const printTitle = document.createElement('div');
+    printTitle.className = 'section-panel-print-title';
+    printTitle.textContent = tab.label;
+    panel.appendChild(printTitle);
+    tab.sections.forEach((sec, si) => panel.appendChild(buildSectionCard(tab.id, si, sec)));
+    const addBtn = document.createElement('button');
+    addBtn.className = 'btn-add-section';
+    addBtn.dataset.tabId = tab.id;
+    addBtn.textContent = '+ 항목 섹션 추가';
+    panel.appendChild(addBtn);
+  }
+  updateTabBadge(tab.id);
+  showToast('섹션이 삭제되었습니다.');
+}
+
+function startEditSecName(nameEl) {
+  const wrap  = nameEl.closest('.section-name-wrap');
+  const input = wrap.querySelector('.section-name-input');
   delete input.dataset.cancel;
+  input.value = nameEl.textContent;
   nameEl.style.display = 'none';
   input.style.display  = 'inline-block';
   input.select();
 }
 
-function finishEditName(input) {
-  const {tab, sidx} = input.dataset;
+function finishEditSecName(input) {
   const wrap   = input.closest('.section-name-wrap');
   const nameEl = wrap.querySelector('.section-name');
   if (!input.dataset.cancel) {
     const val = input.value.trim() || '(이름 없음)';
-    tabData[tab][parseInt(sidx)].name = val;
+    const tab = tabList.find(t => t.id === input.dataset.tid);
+    if (tab) tab.sections[parseInt(input.dataset.sidx)].name = val;
     nameEl.textContent = val;
   }
   input.style.display  = 'none';
   nameEl.style.display = '';
 }
 
-/* ════════════════════════════════════════════
-   섹션 추가 / 삭제
-════════════════════════════════════════════ */
-function addSection(tid) {
-  if (!tabData[tid]) tabData[tid] = [];
-  tabData[tid].push({name:'새 섹션', rows:[]});
-  renderTab(tid);
-  updateAllCounts();
-  // 새로 추가된 섹션 이름 바로 편집
-  const panel = document.getElementById(tid);
-  const cards = panel.querySelectorAll('.section-card');
-  const lastCard = cards[cards.length - 1];
-  if (lastCard) {
-    const nameEl = lastCard.querySelector('.section-name');
-    if (nameEl) setTimeout(() => startEditName(nameEl), 50);
-  }
-}
-
-function openDelModal(tid, sidx) {
-  pendingDelTab = tid;
-  pendingDelSecIdx = sidx;
-  const sec = tabData[tid]?.[sidx];
-  document.getElementById('delModalMsg').innerHTML =
-    `<b>"${sec ? sec.name : ''}"</b> 섹션을 삭제할까요?<br>포함된 모든 항목이 함께 삭제됩니다.`;
-  document.getElementById('delModal').classList.add('show');
-}
-
-function confirmDelSection() {
-  document.getElementById('delModal').classList.remove('show');
-  if (pendingDelTab === null || pendingDelSecIdx === null) return;
-  tabData[pendingDelTab].splice(pendingDelSecIdx, 1);
-  renderTab(pendingDelTab);
-  updateAllCounts();
-  pendingDelTab = pendingDelSecIdx = null;
-  showToast('섹션이 삭제되었습니다.');
-}
-
-/* ════════════════════════════════════════════
-   행 추가 / 삭제
-════════════════════════════════════════════ */
+/* ══════════════════════════════════════════
+   행 조작
+══════════════════════════════════════════ */
 function addRow(tid, sidx) {
-  tabData[tid][sidx].rows.push({gubun:'',content:'',note:''});
-  const tbody = document.getElementById(`tbody_${tid}_${sidx}`);
-  const rows  = tabData[tid][sidx].rows;
+  const tab = tabList.find(t => t.id === tid);
+  if (!tab) return;
+  tab.sections[sidx].rows.push({gubun:'',content:'',note:''});
+  const rows  = tab.sections[sidx].rows;
   const ridx  = rows.length - 1;
+  const tbody = document.getElementById(`tbody_${tid}_${sidx}`);
   tbody.appendChild(buildRow(tid, sidx, ridx, rows[ridx]));
-  updateSectionCount(tid, sidx);
-  updateTabCount(tid);
-  // focus
-  const lastInputs = tbody.querySelectorAll('tr:last-child input');
-  if (lastInputs[0]) lastInputs[0].focus();
+  updateSecCount(tid, sidx);
+  updateTabBadge(tid);
+  const inputs = tbody.querySelectorAll('tr:last-child input');
+  if (inputs[0]) inputs[0].focus();
 }
 
 function delRow(tid, sidx, ridx) {
-  tabData[tid][sidx].rows.splice(ridx, 1);
+  const tab = tabList.find(t => t.id === tid);
+  if (!tab) return;
+  tab.sections[sidx].rows.splice(ridx, 1);
   const tbody = document.getElementById(`tbody_${tid}_${sidx}`);
-  // tbody 전체 재렌더
   tbody.innerHTML = '';
-  tabData[tid][sidx].rows.forEach((r, i) => tbody.appendChild(buildRow(tid, sidx, i, r)));
-  updateSectionCount(tid, sidx);
-  updateTabCount(tid);
+  tab.sections[sidx].rows.forEach((r, i) => tbody.appendChild(buildRow(tid, sidx, i, r)));
+  updateSecCount(tid, sidx);
+  updateTabBadge(tid);
 }
 
-/* ════════════════════════════════════════════
+/* ══════════════════════════════════════════
    카운트 업데이트
-════════════════════════════════════════════ */
-function updateSectionCount(tid, sidx) {
+══════════════════════════════════════════ */
+function countTabRows(tab) {
+  return tab.sections.reduce((s, sec) => s + sec.rows.length, 0);
+}
+
+function updateSecCount(tid, sidx) {
   const el = document.getElementById(`sc_${tid}_${sidx}`);
   if (!el) return;
-  const cnt = tabData[tid]?.[sidx]?.rows?.length || 0;
+  const tab = tabList.find(t => t.id === tid);
+  const cnt = tab?.sections[sidx]?.rows.length || 0;
   el.textContent = cnt > 0 ? `(${cnt}개)` : '';
 }
 
-const TAB_CNT_MAP = {tab1:'cnt1',tab2:'cnt2',tab3:'cnt3',tab4:'cnt4',tab5:'cnt5',tab6:'cnt6',tab7:'cnt7'};
-
-function updateTabCount(tid) {
-  const el = document.getElementById(TAB_CNT_MAP[tid]);
+function updateTabBadge(tid) {
+  const el = document.getElementById('cnt_' + tid);
   if (!el) return;
-  const total = (tabData[tid] || []).reduce((s, sec) => s + sec.rows.length, 0);
-  el.textContent = total;
+  const tab = tabList.find(t => t.id === tid);
+  el.textContent = tab ? countTabRows(tab) : 0;
 }
 
-function updateAllCounts() {
-  Object.keys(TAB_CNT_MAP).forEach(tid => updateTabCount(tid));
-}
-
-/* ════════════════════════════════════════════
-   탭 전환
-════════════════════════════════════════════ */
-function switchTab(tid, btn) {
-  currentTabId = tid;
-  document.querySelectorAll('.section-panel').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById(tid).classList.add('active');
-  btn.classList.add('active');
-}
-
-/* ════════════════════════════════════════════
+/* ══════════════════════════════════════════
    저장
-════════════════════════════════════════════ */
+══════════════════════════════════════════ */
 function getFarmInfo() {
   return {
     name:   document.getElementById('farmName').value,
@@ -742,7 +897,7 @@ function getFarmInfo() {
 }
 
 function saveAll() {
-  const payload = {farm: getFarmInfo(), tabs: tabData, savedAt: new Date().toISOString()};
+  const payload = {farm: getFarmInfo(), tabList, nextTabNum, savedAt: new Date().toISOString()};
   localStorage.setItem('ghfarm_data', JSON.stringify(payload));
   const blob = new Blob([JSON.stringify(payload, null, 2)], {type:'application/json'});
   const url  = URL.createObjectURL(blob);
@@ -754,9 +909,9 @@ function saveAll() {
   showToast('저장 완료! JSON 파일이 다운로드됩니다.');
 }
 
-/* ════════════════════════════════════════════
+/* ══════════════════════════════════════════
    인쇄 / PDF
-════════════════════════════════════════════ */
+══════════════════════════════════════════ */
 function doPrint() {
   document.getElementById('pdfModal').classList.remove('show');
   const r = document.querySelector('input[name="pdfRange"]:checked');
@@ -778,9 +933,9 @@ function executePrint() {
   }, 800);
 }
 
-/* ════════════════════════════════════════════
+/* ══════════════════════════════════════════
    유틸
-════════════════════════════════════════════ */
+══════════════════════════════════════════ */
 function esc(s){ return (s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
 function showToast(msg) {
@@ -790,9 +945,9 @@ function showToast(msg) {
   setTimeout(() => t.classList.remove('show'), 2600);
 }
 
-/* ════════════════════════════════════════════
+/* ══════════════════════════════════════════
    시작
-════════════════════════════════════════════ */
+══════════════════════════════════════════ */
 init();
 </script>
 </body>
