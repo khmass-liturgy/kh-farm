@@ -1,1 +1,805 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>강희농장 산란계 관리 프로그램</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
+:root{
+  --bg:#f5f3ee;--surface:#fff;--surface2:#faf9f6;
+  --border:#ddd8cc;--border-light:#ece9e1;
+  --accent:#4a7c59;--accent-light:#e8f0eb;
+  --text:#1e1e1e;--text-mid:#4a4a4a;--text-soft:#8a8a8a;
+  --danger:#b94040;--danger-light:#fdf0f0;
+  --shadow:0 2px 8px rgba(0,0,0,.07);
+  --shadow-lg:0 6px 20px rgba(0,0,0,.10);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
 
+/* ── Header ── */
+header{background:var(--accent);color:#fff;padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:60px;position:sticky;top:0;z-index:200;box-shadow:0 2px 10px rgba(0,0,0,.15);}
+.header-left{display:flex;align-items:center;gap:10px;}
+.header-icon{font-size:20px;}
+header h1{font-size:16px;font-weight:700;}
+header h1 span{font-size:11px;opacity:.7;font-weight:300;margin-left:6px;}
+.header-btns{display:flex;gap:6px;}
+.hbtn{border:none;border-radius:7px;padding:7px 13px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:4px;transition:all .15s;}
+.hbtn-print{background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.4);}
+.hbtn-print:hover{background:rgba(255,255,255,.28);}
+.hbtn-pdf{background:#c4813a;color:#fff;}
+.hbtn-pdf:hover{background:#b0722f;}
+.hbtn-save{background:#fff;color:var(--accent);}
+.hbtn-save:hover{background:#eafaf0;}
+
+/* ── Container ── */
+.container{max-width:1200px;margin:0 auto;padding:24px 18px;}
+
+/* ── Farm info ── */
+.farm-info-bar{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 20px;margin-bottom:20px;display:flex;flex-wrap:wrap;gap:14px;box-shadow:var(--shadow);}
+.farm-info-item{flex:1;min-width:108px;}
+.farm-info-item label{font-size:10px;font-weight:700;color:var(--text-soft);letter-spacing:.5px;text-transform:uppercase;display:block;margin-bottom:3px;}
+.farm-info-item input{width:100%;border:1px solid var(--border);border-radius:6px;padding:5px 8px;font-size:13px;font-family:inherit;color:var(--text);background:var(--surface2);}
+.farm-info-item input:focus{outline:none;border-color:var(--accent);}
+
+/* ── Tabs ── */
+.tabs{display:flex;gap:4px;margin-bottom:16px;flex-wrap:wrap;}
+.tab-btn{padding:8px 16px;border:1px solid var(--border);border-radius:8px;background:var(--surface);color:var(--text-mid);font-size:13px;font-weight:500;cursor:pointer;font-family:inherit;transition:all .15s;display:flex;align-items:center;gap:5px;}
+.tab-btn:hover{border-color:var(--accent);color:var(--accent);}
+.tab-btn.active{background:var(--accent);color:#fff;border-color:var(--accent);font-weight:700;}
+.tab-badge{background:var(--accent-light);color:var(--accent);border-radius:10px;padding:1px 6px;font-size:11px;font-weight:700;}
+.tab-btn.active .tab-badge{background:rgba(255,255,255,.25);color:#fff;}
+
+/* ── Section panels ── */
+.section-panel{display:none;}
+.section-panel.active{display:block;}
+
+/* ── Section card ── */
+.section-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;margin-bottom:14px;overflow:visible;box-shadow:var(--shadow);}
+.section-card-header{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:var(--surface2);border-bottom:1px solid var(--border-light);border-radius:12px 12px 0 0;user-select:none;}
+.section-card.collapsed .section-card-header{border-radius:12px;border-bottom:none;}
+.section-title-left{display:flex;align-items:center;gap:8px;flex:1;}
+.section-number{width:24px;height:24px;background:var(--accent);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;}
+/* 섹션 이름 - 클릭 편집 */
+.section-name-wrap{display:flex;align-items:center;gap:6px;flex:1;}
+.section-name{font-size:14px;font-weight:700;cursor:pointer;padding:2px 4px;border-radius:4px;}
+.section-name:hover{background:rgba(74,124,89,.1);}
+.section-name-input{font-size:14px;font-weight:700;border:1.5px solid var(--accent);border-radius:5px;padding:2px 6px;font-family:inherit;color:var(--text);background:#fff;display:none;min-width:160px;}
+.section-count{font-size:11px;color:var(--text-soft);}
+.section-header-btns{display:flex;align-items:center;gap:4px;}
+.btn-section-del{background:none;border:none;color:#ccc;font-size:13px;cursor:pointer;padding:3px 6px;border-radius:4px;transition:all .15s;}
+.btn-section-del:hover{color:var(--danger);background:var(--danger-light);}
+.collapse-icon{font-size:11px;color:var(--text-soft);transition:transform .2s;cursor:pointer;padding:3px 6px;}
+.section-card.collapsed .collapse-icon{transform:rotate(-90deg);}
+
+/* ── Section body ── */
+.section-card-body{overflow:hidden;}
+.section-card.collapsed .section-card-body{display:none;}
+
+/* ── Table ── */
+.rows-table{width:100%;border-collapse:collapse;}
+.rows-table th{background:#f0f0f0;font-size:11px;font-weight:700;color:var(--text-soft);text-align:left;padding:8px 11px;border-bottom:1px solid var(--border-light);}
+.rows-table td{padding:7px 11px;border-bottom:1px solid var(--border-light);vertical-align:middle;font-size:13px;}
+.rows-table tr:last-child td{border-bottom:none;}
+.rows-table tr:hover td{background:var(--accent-light);}
+.rows-table input[type="text"],.rows-table select{width:100%;border:1px solid var(--border);border-radius:5px;padding:5px 7px;font-size:12px;font-family:inherit;color:var(--text);background:var(--surface2);}
+.rows-table input:focus,.rows-table select:focus{outline:none;border-color:var(--accent);background:#fff;}
+.col-no{width:34px;color:var(--text-soft);font-size:12px;text-align:center;}
+.col-gubun{width:98px;}
+.col-content{min-width:180px;}
+.col-category{width:86px;}
+.col-note{width:150px;}
+.col-action{width:40px;text-align:center;}
+
+/* ── Buttons ── */
+.btn-add-row{display:flex;align-items:center;justify-content:center;gap:5px;margin:10px 16px;padding:7px;background:var(--accent-light);color:var(--accent);border:1px dashed var(--accent);border-radius:7px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;width:calc(100% - 32px);transition:all .15s;}
+.btn-add-row:hover{background:var(--accent);color:#fff;}
+.btn-del{background:none;border:none;color:#ccc;font-size:14px;cursor:pointer;padding:3px 6px;border-radius:4px;transition:all .15s;}
+.btn-del:hover{color:var(--danger);background:var(--danger-light);}
+
+/* ── Add section button ── */
+.btn-add-section{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;padding:11px;background:var(--surface);color:var(--accent);border:2px dashed var(--accent);border-radius:12px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;margin-bottom:4px;transition:all .15s;}
+.btn-add-section:hover{background:var(--accent-light);}
+
+/* ── Toast ── */
+#toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(14px);background:var(--accent);color:#fff;padding:10px 24px;border-radius:10px;font-size:13px;font-weight:600;box-shadow:var(--shadow-lg);opacity:0;pointer-events:none;transition:all .3s;z-index:999;}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+/* ── Confirm Modal (섹션 삭제 확인) ── */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:300;align-items:center;justify-content:center;}
+.modal-overlay.show{display:flex;}
+.modal-box{background:#fff;border-radius:14px;padding:26px;width:340px;box-shadow:0 20px 60px rgba(0,0,0,.25);}
+.modal-box h2{font-size:15px;font-weight:700;margin-bottom:8px;}
+.modal-box p{font-size:13px;color:var(--text-mid);margin-bottom:20px;line-height:1.6;}
+.modal-options{display:flex;flex-direction:column;gap:8px;margin-bottom:20px;}
+.modal-opt{display:flex;align-items:center;gap:9px;padding:10px 12px;border:1px solid var(--border);border-radius:9px;cursor:pointer;transition:all .15s;font-size:13px;}
+.modal-opt:hover{border-color:var(--accent);background:var(--accent-light);}
+.modal-opt input[type="radio"]{accent-color:var(--accent);width:14px;height:14px;}
+.modal-opt-label{font-weight:600;}
+.modal-opt-desc{font-size:11px;color:var(--text-soft);}
+.modal-btns{display:flex;gap:8px;justify-content:flex-end;}
+.modal-cancel{background:none;border:1px solid var(--border);border-radius:7px;padding:7px 16px;font-size:13px;cursor:pointer;font-family:inherit;}
+.modal-cancel:hover{background:var(--bg);}
+.modal-confirm{background:var(--accent);color:#fff;border:none;border-radius:7px;padding:7px 16px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;}
+.modal-confirm:hover{background:#3d6a4b;}
+.modal-confirm-danger{background:var(--danger);}
+.modal-confirm-danger:hover{background:#a03030;}
+
+/* ── Print ── */
+@media print{
+  @page{size:A4;margin:13mm 10mm;}
+  *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;}
+  body{background:#fff!important;font-size:10pt;}
+  header{position:static!important;background:#4a7c59!important;height:auto!important;padding:8px 12px!important;margin-bottom:7px;box-shadow:none!important;}
+  .header-btns{display:none!important;}
+  .container{max-width:100%!important;padding:0!important;}
+  .farm-info-bar{display:grid!important;grid-template-columns:repeat(3,1fr)!important;gap:4px 12px!important;padding:8px 11px!important;margin-bottom:10px!important;box-shadow:none!important;border:1px solid #ccc!important;}
+  .farm-info-item input{border:none!important;background:transparent!important;padding:0!important;font-weight:600;}
+  .tabs,.btn-add-section,.btn-add-row,.col-action,.btn-section-del,#toast,.modal-overlay{display:none!important;}
+  .section-panel{display:block!important;}
+  .section-panel::before{display:block;font-size:11pt;font-weight:700;color:#4a7c59;border-bottom:2px solid #4a7c59;padding-bottom:3px;margin:12px 0 7px;}
+  #tab1::before{content:"1. 입추준비";}
+  #tab2::before{content:"2. 입추";}
+  #tab3::before{content:"3. 산란전";}
+  #tab4::before{content:"4. 산란중";}
+  #tab5::before{content:"5. 겨울철 계사 관리";}
+  #tab6::before{content:"6. 주요 검사";}
+  #tab7::before{content:"7. 교육 및 검사";}
+  .section-card{box-shadow:none!important;border:1px solid #ccc!important;border-radius:3px!important;margin-bottom:7px!important;page-break-inside:avoid;}
+  .section-card.collapsed .section-card-body{display:block!important;}
+  .section-card-header{background:#e8f0eb!important;padding:5px 9px!important;}
+  .collapse-icon{display:none!important;}
+  .section-name-input{display:none!important;}
+  .rows-table th{background:#f0f0f0!important;font-size:8pt!important;padding:3px 6px!important;}
+  .rows-table td{padding:3px 6px!important;font-size:9pt!important;}
+  .rows-table input[type="text"],.rows-table select{border:none!important;background:transparent!important;padding:0!important;font-size:9pt!important;-webkit-appearance:none;appearance:none;}
+  .section-number{background:#4a7c59!important;color:#fff!important;}
+}
+@media(max-width:768px){.container{padding:12px 8px;}.col-note{display:none;}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-left">
+    <span class="header-icon">🐔</span>
+    <h1>강희농장 산란계 관리 프로그램<span>동물복지 평사</span></h1>
+  </div>
+  <div class="header-btns">
+    <button class="hbtn hbtn-print" id="btnPrint">🖨️ 인쇄</button>
+    <button class="hbtn hbtn-pdf"   id="btnPdf">📄 PDF</button>
+    <button class="hbtn hbtn-save"  id="btnSave">💾 저장</button>
+  </div>
+</header>
+
+<!-- PDF 모달 -->
+<div class="modal-overlay" id="pdfModal">
+  <div class="modal-box">
+    <h2>📄 PDF 출력 옵션</h2>
+    <p>출력할 범위를 선택하세요.<br>브라우저 인쇄 창에서 "PDF로 저장"을 선택하면 PDF가 생성됩니다.</p>
+    <div class="modal-options">
+      <label class="modal-opt"><input type="radio" name="pdfRange" value="all" checked><div><div class="modal-opt-label">📋 전체 출력</div><div class="modal-opt-desc">모든 탭 내용을 한 번에</div></div></label>
+      <label class="modal-opt"><input type="radio" name="pdfRange" value="current"><div><div class="modal-opt-label">📑 현재 탭만</div><div class="modal-opt-desc">지금 보고 있는 탭만</div></div></label>
+    </div>
+    <div class="modal-btns">
+      <button class="modal-cancel" id="btnPdfCancel">취소</button>
+      <button class="modal-confirm" id="btnPdfConfirm">인쇄 / PDF 저장</button>
+    </div>
+  </div>
+</div>
+
+<!-- 섹션 삭제 확인 모달 -->
+<div class="modal-overlay" id="delModal">
+  <div class="modal-box">
+    <h2>⚠️ 섹션 삭제</h2>
+    <p id="delModalMsg">이 섹션을 삭제할까요?<br>포함된 모든 항목이 함께 삭제됩니다.</p>
+    <div class="modal-btns">
+      <button class="modal-cancel" id="btnDelCancel">취소</button>
+      <button class="modal-confirm modal-confirm-danger" id="btnDelConfirm">삭제</button>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <!-- Farm Info -->
+  <div class="farm-info-bar">
+    <div class="farm-info-item"><label>농장명</label><input type="text" id="farmName" value="강희농장"></div>
+    <div class="farm-info-item"><label>작성일</label><input type="date" id="writeDate"></div>
+    <div class="farm-info-item"><label>작성자</label><input type="text" id="writer" placeholder="담당자명"></div>
+    <div class="farm-info-item"><label>사육 규모</label><input type="text" id="scale" placeholder="예: 20,000수"></div>
+    <div class="farm-info-item"><label>품종</label><input type="text" id="breed" placeholder="예: 하이라인브라운"></div>
+    <div class="farm-info-item"><label>계사 동수</label><input type="text" id="houses" placeholder="예: 3동"></div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="tabs" id="tabBar">
+    <button class="tab-btn active" data-tab="tab1">🔧 입추준비 <span class="tab-badge" id="cnt1">0</span></button>
+    <button class="tab-btn" data-tab="tab2">🐣 입추 <span class="tab-badge" id="cnt2">0</span></button>
+    <button class="tab-btn" data-tab="tab3">📦 산란전 <span class="tab-badge" id="cnt3">0</span></button>
+    <button class="tab-btn" data-tab="tab4">🥚 산란중 <span class="tab-badge" id="cnt4">0</span></button>
+    <button class="tab-btn" data-tab="tab5">❄️ 겨울철 <span class="tab-badge" id="cnt5">0</span></button>
+    <button class="tab-btn" data-tab="tab6">🔬 주요검사 <span class="tab-badge" id="cnt6">0</span></button>
+    <button class="tab-btn" data-tab="tab7">📚 교육·검사 <span class="tab-badge" id="cnt7">0</span></button>
+  </div>
+
+  <!-- 탭 패널은 JS로 동적 렌더링 -->
+  <div id="tab1" class="section-panel active"></div>
+  <div id="tab2" class="section-panel"></div>
+  <div id="tab3" class="section-panel"></div>
+  <div id="tab4" class="section-panel"></div>
+  <div id="tab5" class="section-panel"></div>
+  <div id="tab6" class="section-panel"></div>
+  <div id="tab7" class="section-panel"></div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+/* ════════════════════════════════════════════
+   상수 & 기본 데이터
+════════════════════════════════════════════ */
+const DATA_VERSION = 'v4';
+const CATEGORIES   = ['사양관리','약품투약','예방백신','기타관리'];
+
+// 탭별 기본 섹션 정의 { name, rows[] }
+const INIT_TABS = {
+  tab1:[
+    {name:'계분 반출 및 청소', rows:[
+      {gubun:'계분 반출',content:'계사 내부 먼지 청소',category:'사양관리',note:''},
+      {gubun:'계분 반출',content:'사료라인 잔여사료 배출 처리',category:'사양관리',note:''},
+      {gubun:'계분 반출',content:'물라인 청소',category:'사양관리',note:''},
+      {gubun:'계분 반출',content:'산란상자내 청소',category:'사양관리',note:''},
+    ]},
+    {name:'사료빈 청소', rows:[
+      {gubun:'사료빈 청소',content:'사료빈 물청소',category:'사양관리',note:''},
+      {gubun:'사료빈 청소',content:'건조',category:'사양관리',note:''},
+    ]},
+    {name:'급수 관련 청소', rows:[
+      {gubun:'급수관련 청소',content:'급수실 청소 (물통, 모터, 여과기 등)',category:'사양관리',note:''},
+    ]},
+    {name:'산란상자 청소', rows:[
+      {gubun:'산란상자 청소',content:'산란상자내 계분, 먼지 청소',category:'사양관리',note:''},
+      {gubun:'산란상자 청소',content:'계란 이송벨트 청소',category:'사양관리',note:''},
+    ]},
+    {name:'소독', rows:[
+      {gubun:'소독',content:'급이라인, 급수라인, 산란상자 소독',category:'약품투약',note:'소독약품 : 파콤 A'},
+      {gubun:'소독',content:'횃대, 기타시설물 소독',category:'약품투약',note:''},
+    ]},
+    {name:'사료·물 준비', rows:[
+      {gubun:'사료/물 준비',content:'곰팡이 흡착제 첨가',category:'약품투약',note:'흡착제 : 마이코톡신'},
+      {gubun:'사료/물 준비',content:'물 소독제 첨가',category:'약품투약',note:'소독제 : 라이프가드정'},
+    ]},
+    {name:'왕겨 살포 · 실리카 도포 · 등라인', rows:[
+      {gubun:'왕겨 살포',content:'왕겨살포 : 100수/1포',category:'사양관리',note:''},
+      {gubun:'실리카 도포',content:'실리카 도포 : 산란상자, 횃대 등',category:'기타관리',note:''},
+      {gubun:'등라인',content:'점검 및 교체',category:'기타관리',note:''},
+    ]},
+  ],
+  tab2:[
+    {name:'입추시 관리', rows:[
+      {gubun:'입추시',content:'체중, 균일도 체크 (80~85%)',category:'사양관리',note:''},
+      {gubun:'입추시',content:'걸음걸이, 활력도 등 건강 체크',category:'사양관리',note:''},
+      {gubun:'입추시',content:'계분 체크 : 혈변·콕시듐, 묽은변·장염',category:'사양관리',note:''},
+      {gubun:'입추시',content:'중추 백신기록 확인, 체크',category:'예방백신',note:''},
+      {gubun:'입추시',content:'부리다듬기, SE검사 기록 체크',category:'기타관리',note:''},
+    ]},
+    {name:'예방백신 실시', rows:[
+      {gubun:'예방백신',content:'구충 실시 : 2회 실시(1주일), 90~100일',category:'예방백신',note:'구충제 : 레바미솔산'},
+      {gubun:'예방백신',content:'IB+QX 실시(전동) : 90~100일',category:'예방백신',note:'IB + QX'},
+      {gubun:'예방백신',content:'SG9R 생독백신 실시 : 100일',category:'예방백신',note:'SG9R'},
+      {gubun:'예방백신',content:'ABBNE 백신실시 : 110일',category:'예방백신',note:'PABEN-Q'},
+    ]},
+  ],
+  tab3:[
+    {name:'산란 준비', rows:[
+      {gubun:'산란준비',content:'사각지역 차단망 설치',category:'사양관리',note:''},
+      {gubun:'산란준비',content:'어두운곳 등 설치, 반사필름 설치',category:'기타관리',note:''},
+      {gubun:'산란준비',content:'산란상자 산란 유도',category:'사양관리',note:''},
+      {gubun:'산란준비',content:'산란상자, 벨트 점검',category:'사양관리',note:''},
+      {gubun:'산란준비',content:'점등 시작 (타이머 점검)',category:'사양관리',note:''},
+      {gubun:'산란준비',content:'산란예비 사료 급여 (1~2회)',category:'사양관리',note:'산란예비 사료'},
+    ]},
+  ],
+  tab4:[
+    {name:'산란 사양관리', rows:[
+      {gubun:'산란 사양',content:'단계별 산란사료 급이',category:'사양관리',note:''},
+      {gubun:'산란 사양',content:'음수백신시 중화제 사용',category:'약품투약',note:'※ 음수백신 : 중화제 사용'},
+      {gubun:'산란 사양',content:'점등 유지 (15시간)',category:'사양관리',note:''},
+      {gubun:'산란 사양',content:'급이량, 급수량 체크',category:'사양관리',note:''},
+      {gubun:'산란 사양',content:'여름철 환기관리 유의',category:'사양관리',note:''},
+      {gubun:'산란 사양',content:'왕겨 수시 보충',category:'사양관리',note:''},
+    ]},
+    {name:'예방백신 실시', rows:[
+      {gubun:'예방백신',content:'IB+QX 실시(전동) : 2개월 1회',category:'예방백신',note:''},
+      {gubun:'예방백신',content:'애비뉴(뉴캐슬) 실시(전동) : 2개월 1회',category:'예방백신',note:''},
+      {gubun:'예방백신',content:'대장균 백신 : 매년 11월/겨울전 전동 실시',category:'예방백신',note:'대장균 백신 : 이콜라이'},
+      {gubun:'예방백신',content:'음수백신시 중화제 사용',category:'약품투약',note:'※ 음수백신 : 중화제 사용'},
+    ]},
+    {name:'서부사료 주령별 급이', rows:[
+      {gubun:'중추단계',content:'중병아리',category:'사양관리',note:'서부사료 주령별 급이'},
+      {gubun:'산란초기',content:'산란예비',category:'사양관리',note:''},
+      {gubun:'~40주',content:'웰빙1',category:'사양관리',note:''},
+      {gubun:'~50주',content:'웰빙2',category:'사양관리',note:''},
+      {gubun:'~60주',content:'웰빙3',category:'사양관리',note:''},
+      {gubun:'~70주',content:'웰빙4',category:'사양관리',note:''},
+      {gubun:'70주 이상',content:'웰빙5',category:'사양관리',note:''},
+    ]},
+  ],
+  tab5:[
+    {name:'겨울철 계사 관리', rows:[
+      {gubun:'겨울철 계사',content:'계분 일부 반출, 왕겨 보충',category:'사양관리',note:''},
+      {gubun:'겨울철 계사',content:'측면 비닐 설치 및 환풍기 점검',category:'기타관리',note:''},
+      {gubun:'겨울철 계사',content:'급수기 급수조절부분 보온 실시',category:'사양관리',note:''},
+      {gubun:'겨울철 계사',content:'급수실 라디에이터 가동',category:'사양관리',note:''},
+      {gubun:'겨울철 계사',content:'급수라인 열선 점검 및 가동',category:'사양관리',note:''},
+      {gubun:'겨울철 계사',content:'급수라인 동파방지대책 마련 : 물흘림 등',category:'기타관리',note:''},
+      {gubun:'겨울철 계사',content:'계사 틈새 관리 철저 : 샛바람',category:'기타관리',note:''},
+      {gubun:'겨울철 계사',content:'왕겨 수시 보충',category:'사양관리',note:''},
+    ]},
+  ],
+  tab6:[
+    {name:'주요 검사 항목', rows:[
+      {gubun:'SE검사',content:'HACCP 대비 SE검사',category:'기타관리',note:''},
+      {gubun:'SE검사',content:'중추 입추시 SE 성적서 확인',category:'기타관리',note:''},
+      {gubun:'환경검사',content:'환경검사 실시 : 반기 1회 (위생시험소)',category:'기타관리',note:''},
+      {gubun:'품질검사',content:'자가품질 검사 : 반기 1회 (위생시험소)',category:'기타관리',note:''},
+      {gubun:'출하검사',content:'출하전 살충제 검사',category:'기타관리',note:''},
+    ]},
+  ],
+  tab7:[
+    {name:'교육', rows:[
+      {gubun:'교육',content:'무항생제축산물 교육',category:'기타관리',note:''},
+      {gubun:'교육',content:'HACCP 교육',category:'기타관리',note:''},
+      {gubun:'교육',content:'동물복지 교육',category:'기타관리',note:''},
+      {gubun:'교육',content:'축산업종사자 교육, 차량 교육',category:'기타관리',note:''},
+      {gubun:'교육',content:'매장 위생교육, 위생 검사 (보건소)',category:'기타관리',note:''},
+    ]},
+    {name:'수질·전기안전 검사', rows:[
+      {gubun:'수질검사',content:'수질검사 : 매년',category:'기타관리',note:''},
+      {gubun:'전기안전',content:'전기안전검사 : 1회/2년',category:'기타관리',note:''},
+    ]},
+  ],
+};
+
+/* ════════════════════════════════════════════
+   상태
+════════════════════════════════════════════ */
+// tabData[tabId] = [ {name, rows:[{gubun,content,category,note}]}, ... ]
+let tabData = {};
+let currentTabId = 'tab1';
+let pendingDelTab = null;
+let pendingDelSecIdx = null;
+let printMode = 'current';
+
+/* ════════════════════════════════════════════
+   초기화
+════════════════════════════════════════════ */
+function init() {
+  document.getElementById('writeDate').value = new Date().toISOString().split('T')[0];
+
+  if (localStorage.getItem('ghfarm_version') !== DATA_VERSION) {
+    localStorage.removeItem('ghfarm_data');
+    localStorage.setItem('ghfarm_version', DATA_VERSION);
+  }
+
+  const saved = localStorage.getItem('ghfarm_data');
+  if (saved) {
+    try {
+      const p = JSON.parse(saved);
+      tabData = p.tabs || deepCopy(INIT_TABS);
+      if (p.farm) {
+        ['farmName','writeDate','writer','scale','breed','houses'].forEach(id => {
+          const key = id === 'farmName' ? 'name' : id;
+          if (p.farm[key]) document.getElementById(id).value = p.farm[key];
+        });
+      }
+    } catch(e) { tabData = deepCopy(INIT_TABS); }
+  } else {
+    tabData = deepCopy(INIT_TABS);
+  }
+
+  Object.keys(tabData).forEach(tid => renderTab(tid));
+  updateAllCounts();
+  bindStaticEvents();
+}
+
+function deepCopy(o) { return JSON.parse(JSON.stringify(o)); }
+
+/* ════════════════════════════════════════════
+   정적 이벤트 (한 번만 바인딩)
+════════════════════════════════════════════ */
+function bindStaticEvents() {
+  // 탭 전환
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => switchTab(btn.dataset.tab, btn));
+  });
+
+  // 헤더 버튼
+  document.getElementById('btnPrint').addEventListener('click', () => { printMode='current'; executePrint(); });
+  document.getElementById('btnPdf').addEventListener('click',   () => document.getElementById('pdfModal').classList.add('show'));
+  document.getElementById('btnSave').addEventListener('click',  saveAll);
+
+  // PDF 모달
+  document.getElementById('btnPdfCancel').addEventListener('click',  () => document.getElementById('pdfModal').classList.remove('show'));
+  document.getElementById('btnPdfConfirm').addEventListener('click', doPrint);
+
+  // 섹션 삭제 확인 모달
+  document.getElementById('btnDelCancel').addEventListener('click',  () => document.getElementById('delModal').classList.remove('show'));
+  document.getElementById('btnDelConfirm').addEventListener('click', confirmDelSection);
+
+  // 이벤트 위임 - 동적 버튼 처리
+  document.body.addEventListener('click', e => {
+    // 행 추가
+    const addRowBtn = e.target.closest('.btn-add-row');
+    if (addRowBtn) { addRow(addRowBtn.dataset.tab, parseInt(addRowBtn.dataset.sidx)); return; }
+
+    // 행 삭제
+    const delRowBtn = e.target.closest('.btn-del[data-row]');
+    if (delRowBtn) { delRow(delRowBtn.dataset.tab, parseInt(delRowBtn.dataset.sidx), parseInt(delRowBtn.dataset.row)); return; }
+
+    // 섹션 접기
+    const collapseBtn = e.target.closest('.collapse-icon');
+    if (collapseBtn) { collapseBtn.closest('.section-card').classList.toggle('collapsed'); return; }
+
+    // 섹션 삭제 버튼
+    const delSecBtn = e.target.closest('.btn-section-del');
+    if (delSecBtn) { openDelModal(delSecBtn.dataset.tab, parseInt(delSecBtn.dataset.sidx)); return; }
+
+    // 섹션 추가 버튼
+    const addSecBtn = e.target.closest('.btn-add-section');
+    if (addSecBtn) { addSection(addSecBtn.dataset.tab); return; }
+  });
+
+  // 섹션 이름 인라인 편집 (이벤트 위임)
+  document.body.addEventListener('click', e => {
+    const nameEl = e.target.closest('.section-name');
+    if (nameEl) { startEditName(nameEl); return; }
+  });
+
+  document.body.addEventListener('keydown', e => {
+    if (e.target.classList.contains('section-name-input')) {
+      if (e.key === 'Enter') { e.target.blur(); }
+      if (e.key === 'Escape') { e.target.dataset.cancel = '1'; e.target.blur(); }
+    }
+  });
+
+  document.body.addEventListener('blur', e => {
+    if (e.target.classList.contains('section-name-input')) {
+      finishEditName(e.target);
+    }
+  }, true);
+
+  // input/select 변경 (이벤트 위임)
+  document.body.addEventListener('change', e => {
+    const el = e.target;
+    if (!el.dataset.tab || !el.dataset.sidx || !el.dataset.row || !el.dataset.field) return;
+    const {tab, sidx, row, field} = el.dataset;
+    const sec = tabData[tab]?.[parseInt(sidx)];
+    if (sec && sec.rows[parseInt(row)]) {
+      sec.rows[parseInt(row)][field] = el.value;
+    }
+  });
+}
+
+/* ════════════════════════════════════════════
+   탭 렌더링
+════════════════════════════════════════════ */
+function renderTab(tid) {
+  const panel = document.getElementById(tid);
+  if (!panel) return;
+  panel.innerHTML = '';
+
+  const sections = tabData[tid] || [];
+  sections.forEach((sec, sidx) => {
+    panel.appendChild(buildSectionCard(tid, sidx, sec));
+  });
+
+  // 섹션 추가 버튼
+  const addBtn = document.createElement('button');
+  addBtn.className = 'btn-add-section';
+  addBtn.dataset.tab = tid;
+  addBtn.textContent = '+ 항목 섹션 추가';
+  panel.appendChild(addBtn);
+
+  updateTabCount(tid);
+}
+
+function buildSectionCard(tid, sidx, sec) {
+  const card = document.createElement('div');
+  card.className = 'section-card';
+  card.id = `card_${tid}_${sidx}`;
+
+  /* ─ 헤더 ─ */
+  const hdr = document.createElement('div');
+  hdr.className = 'section-card-header';
+
+  const titleLeft = document.createElement('div');
+  titleLeft.className = 'section-title-left';
+
+  const numEl = document.createElement('div');
+  numEl.className = 'section-number';
+  numEl.textContent = sidx + 1;
+
+  const nameWrap = document.createElement('div');
+  nameWrap.className = 'section-name-wrap';
+
+  const nameEl = document.createElement('span');
+  nameEl.className = 'section-name';
+  nameEl.title = '클릭하여 이름 수정';
+  nameEl.textContent = sec.name;
+  nameEl.dataset.tab  = tid;
+  nameEl.dataset.sidx = sidx;
+
+  const nameInput = document.createElement('input');
+  nameInput.type = 'text';
+  nameInput.className = 'section-name-input';
+  nameInput.value = sec.name;
+  nameInput.dataset.tab  = tid;
+  nameInput.dataset.sidx = sidx;
+
+  const countEl = document.createElement('span');
+  countEl.className = 'section-count';
+  countEl.id = `sc_${tid}_${sidx}`;
+
+  nameWrap.append(nameEl, nameInput, countEl);
+  titleLeft.append(numEl, nameWrap);
+
+  const rightBtns = document.createElement('div');
+  rightBtns.className = 'section-header-btns';
+
+  const delSecBtn = document.createElement('button');
+  delSecBtn.className = 'btn-section-del';
+  delSecBtn.title = '섹션 삭제';
+  delSecBtn.textContent = '🗑';
+  delSecBtn.dataset.tab  = tid;
+  delSecBtn.dataset.sidx = sidx;
+
+  const collapseIcon = document.createElement('span');
+  collapseIcon.className = 'collapse-icon';
+  collapseIcon.textContent = '▼';
+
+  rightBtns.append(delSecBtn, collapseIcon);
+  hdr.append(titleLeft, rightBtns);
+
+  /* ─ 바디 ─ */
+  const body = document.createElement('div');
+  body.className = 'section-card-body';
+
+  const table = document.createElement('table');
+  table.className = 'rows-table';
+  table.innerHTML = `<thead><tr>
+    <th class="col-no">#</th>
+    <th class="col-gubun">구분</th>
+    <th class="col-content">관리 내용</th>
+    <th class="col-category">분류</th>
+    <th class="col-note">비고</th>
+    <th class="col-action"></th>
+  </tr></thead>`;
+
+  const tbody = document.createElement('tbody');
+  tbody.id = `tbody_${tid}_${sidx}`;
+  sec.rows.forEach((r, ridx) => tbody.appendChild(buildRow(tid, sidx, ridx, r)));
+  table.appendChild(tbody);
+
+  const addRowBtn = document.createElement('button');
+  addRowBtn.className = 'btn-add-row';
+  addRowBtn.dataset.tab  = tid;
+  addRowBtn.dataset.sidx = sidx;
+  addRowBtn.textContent = '+ 항목 추가';
+
+  body.append(table, addRowBtn);
+  card.append(hdr, body);
+
+  updateSectionCount(tid, sidx);
+  return card;
+}
+
+function buildRow(tid, sidx, ridx, r) {
+  const tr = document.createElement('tr');
+  const opts = CATEGORIES.map(c =>
+    `<option value="${c}"${r.category===c?' selected':''}>${c}</option>`
+  ).join('');
+  tr.innerHTML = `
+    <td class="col-no">${ridx+1}</td>
+    <td class="col-gubun"><input type="text" value="${esc(r.gubun)}"   data-tab="${tid}" data-sidx="${sidx}" data-row="${ridx}" data-field="gubun"></td>
+    <td class="col-content"><input type="text" value="${esc(r.content)}" data-tab="${tid}" data-sidx="${sidx}" data-row="${ridx}" data-field="content"></td>
+    <td class="col-category"><select data-tab="${tid}" data-sidx="${sidx}" data-row="${ridx}" data-field="category">${opts}</select></td>
+    <td class="col-note"><input type="text" value="${esc(r.note)}"    data-tab="${tid}" data-sidx="${sidx}" data-row="${ridx}" data-field="note"></td>
+    <td class="col-action"><button class="btn-del" data-tab="${tid}" data-sidx="${sidx}" data-row="${ridx}" title="삭제">✕</button></td>`;
+  return tr;
+}
+
+/* ════════════════════════════════════════════
+   섹션 이름 인라인 편집
+════════════════════════════════════════════ */
+function startEditName(nameEl) {
+  const wrap   = nameEl.closest('.section-name-wrap');
+  const input  = wrap.querySelector('.section-name-input');
+  input.value  = nameEl.textContent;
+  delete input.dataset.cancel;
+  nameEl.style.display = 'none';
+  input.style.display  = 'inline-block';
+  input.select();
+}
+
+function finishEditName(input) {
+  const {tab, sidx} = input.dataset;
+  const wrap   = input.closest('.section-name-wrap');
+  const nameEl = wrap.querySelector('.section-name');
+  if (!input.dataset.cancel) {
+    const val = input.value.trim() || '(이름 없음)';
+    tabData[tab][parseInt(sidx)].name = val;
+    nameEl.textContent = val;
+  }
+  input.style.display  = 'none';
+  nameEl.style.display = '';
+}
+
+/* ════════════════════════════════════════════
+   섹션 추가 / 삭제
+════════════════════════════════════════════ */
+function addSection(tid) {
+  if (!tabData[tid]) tabData[tid] = [];
+  tabData[tid].push({name:'새 섹션', rows:[]});
+  renderTab(tid);
+  updateAllCounts();
+  // 새로 추가된 섹션 이름 바로 편집
+  const panel = document.getElementById(tid);
+  const cards = panel.querySelectorAll('.section-card');
+  const lastCard = cards[cards.length - 1];
+  if (lastCard) {
+    const nameEl = lastCard.querySelector('.section-name');
+    if (nameEl) setTimeout(() => startEditName(nameEl), 50);
+  }
+}
+
+function openDelModal(tid, sidx) {
+  pendingDelTab = tid;
+  pendingDelSecIdx = sidx;
+  const sec = tabData[tid]?.[sidx];
+  document.getElementById('delModalMsg').innerHTML =
+    `<b>"${sec ? sec.name : ''}"</b> 섹션을 삭제할까요?<br>포함된 모든 항목이 함께 삭제됩니다.`;
+  document.getElementById('delModal').classList.add('show');
+}
+
+function confirmDelSection() {
+  document.getElementById('delModal').classList.remove('show');
+  if (pendingDelTab === null || pendingDelSecIdx === null) return;
+  tabData[pendingDelTab].splice(pendingDelSecIdx, 1);
+  renderTab(pendingDelTab);
+  updateAllCounts();
+  pendingDelTab = pendingDelSecIdx = null;
+  showToast('섹션이 삭제되었습니다.');
+}
+
+/* ════════════════════════════════════════════
+   행 추가 / 삭제
+════════════════════════════════════════════ */
+function addRow(tid, sidx) {
+  tabData[tid][sidx].rows.push({gubun:'',content:'',category:'사양관리',note:''});
+  const tbody = document.getElementById(`tbody_${tid}_${sidx}`);
+  const rows  = tabData[tid][sidx].rows;
+  const ridx  = rows.length - 1;
+  tbody.appendChild(buildRow(tid, sidx, ridx, rows[ridx]));
+  updateSectionCount(tid, sidx);
+  updateTabCount(tid);
+  // focus
+  const lastInputs = tbody.querySelectorAll('tr:last-child input');
+  if (lastInputs[0]) lastInputs[0].focus();
+}
+
+function delRow(tid, sidx, ridx) {
+  tabData[tid][sidx].rows.splice(ridx, 1);
+  const tbody = document.getElementById(`tbody_${tid}_${sidx}`);
+  // tbody 전체 재렌더
+  tbody.innerHTML = '';
+  tabData[tid][sidx].rows.forEach((r, i) => tbody.appendChild(buildRow(tid, sidx, i, r)));
+  updateSectionCount(tid, sidx);
+  updateTabCount(tid);
+}
+
+/* ════════════════════════════════════════════
+   카운트 업데이트
+════════════════════════════════════════════ */
+function updateSectionCount(tid, sidx) {
+  const el = document.getElementById(`sc_${tid}_${sidx}`);
+  if (!el) return;
+  const cnt = tabData[tid]?.[sidx]?.rows?.length || 0;
+  el.textContent = cnt > 0 ? `(${cnt}개)` : '';
+}
+
+const TAB_CNT_MAP = {tab1:'cnt1',tab2:'cnt2',tab3:'cnt3',tab4:'cnt4',tab5:'cnt5',tab6:'cnt6',tab7:'cnt7'};
+
+function updateTabCount(tid) {
+  const el = document.getElementById(TAB_CNT_MAP[tid]);
+  if (!el) return;
+  const total = (tabData[tid] || []).reduce((s, sec) => s + sec.rows.length, 0);
+  el.textContent = total;
+}
+
+function updateAllCounts() {
+  Object.keys(TAB_CNT_MAP).forEach(tid => updateTabCount(tid));
+}
+
+/* ════════════════════════════════════════════
+   탭 전환
+════════════════════════════════════════════ */
+function switchTab(tid, btn) {
+  currentTabId = tid;
+  document.querySelectorAll('.section-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(tid).classList.add('active');
+  btn.classList.add('active');
+}
+
+/* ════════════════════════════════════════════
+   저장
+════════════════════════════════════════════ */
+function getFarmInfo() {
+  return {
+    name:   document.getElementById('farmName').value,
+    date:   document.getElementById('writeDate').value,
+    writer: document.getElementById('writer').value,
+    scale:  document.getElementById('scale').value,
+    breed:  document.getElementById('breed').value,
+    houses: document.getElementById('houses').value,
+  };
+}
+
+function saveAll() {
+  const payload = {farm: getFarmInfo(), tabs: tabData, savedAt: new Date().toISOString()};
+  localStorage.setItem('ghfarm_data', JSON.stringify(payload));
+  const blob = new Blob([JSON.stringify(payload, null, 2)], {type:'application/json'});
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href = url;
+  a.download = `강희농장_관리프로그램_${getFarmInfo().date||'export'}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast('저장 완료! JSON 파일이 다운로드됩니다.');
+}
+
+/* ════════════════════════════════════════════
+   인쇄 / PDF
+════════════════════════════════════════════ */
+function doPrint() {
+  document.getElementById('pdfModal').classList.remove('show');
+  const r = document.querySelector('input[name="pdfRange"]:checked');
+  printMode = r ? r.value : 'all';
+  setTimeout(executePrint, 200);
+}
+
+function executePrint() {
+  const allPanels = document.querySelectorAll('.section-panel');
+  const allCards  = document.querySelectorAll('.section-card');
+  allPanels.forEach(p => p.dataset.pw = p.classList.contains('active') ? '1':'0');
+  allCards.forEach(c  => c.dataset.pw = c.classList.contains('collapsed') ? '1':'0');
+  allCards.forEach(c => c.classList.remove('collapsed'));
+  if (printMode === 'all') allPanels.forEach(p => p.classList.add('active'));
+  window.print();
+  setTimeout(() => {
+    allPanels.forEach(p => { if(p.dataset.pw!=='1') p.classList.remove('active'); });
+    allCards.forEach(c  => { if(c.dataset.pw==='1') c.classList.add('collapsed'); });
+  }, 800);
+}
+
+/* ════════════════════════════════════════════
+   유틸
+════════════════════════════════════════════ */
+function esc(s){ return (s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = '✅ ' + msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2600);
+}
+
+/* ════════════════════════════════════════════
+   시작
+════════════════════════════════════════════ */
+init();
+</script>
+</body>
+</html>
